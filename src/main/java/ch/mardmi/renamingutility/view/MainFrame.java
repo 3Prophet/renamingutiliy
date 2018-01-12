@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
 	private Container container;
 	
 	// Tabelle mit dem Inhalt des Verzeichnises
-	public JTable fileTable;
+	private JTable fileTable;
 	
 	// Datei Baum
 	private JTree fileTree;
