@@ -40,11 +40,8 @@ public class MainFrame extends JFrame {
 		setTitle("Renaming Utility");
 		
 		createNavigationPanel();
-		southPanel = new JPanel();
-		southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
-		container.add(BorderLayout.SOUTH, southPanel);
 		
-		createStatusPane();
+		createStatusPanel();
 		
 		setVisible(true);
 	}
@@ -53,7 +50,7 @@ public class MainFrame extends JFrame {
 	 * Erstellt Status Pane, die zeiegt Anzahl der Dateien und
 	 * Selektierte Dataien an. 
 	 */
-	private void createStatusPane() {
+	private void createStatusBar() {
 		JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		statusPanel.setBorder(BorderFactory.createLoweredBevelBorder());
 		JLabel statusLabel = new JLabel("Some Text");
@@ -85,6 +82,14 @@ public class MainFrame extends JFrame {
 	private void createFileTable() {
 		fileTable = new JTable(directoryModel);	
 		fileTable.setName("fileTable");
+	}
+	
+	
+	private void createStatusPanel() {
+		southPanel = new JPanel();
+		southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+		container.add(BorderLayout.SOUTH, southPanel);
+		createStatusBar();
 	}
 
 	private void createFileTreeNavigation() {
