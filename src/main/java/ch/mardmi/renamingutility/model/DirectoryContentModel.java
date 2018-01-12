@@ -22,7 +22,9 @@ public class DirectoryContentModel extends AbstractTableModel {
 	private String[] columnNames = {"Icon", "Name", "New Name", "Size", "Modified"};
 	
 	// Ihnalt des Verzeichnises
-	private List<File> rows;
+	private List<File> files;
+	
+	private List<File> selectedFiles;
 	
 	private FileSystemView fileSystemView;
 	
@@ -32,23 +34,31 @@ public class DirectoryContentModel extends AbstractTableModel {
 	public DirectoryContentModel(File dir) {
 		super();
 		fileSystemView = FileSystemView.getFileSystemView();
-		rows = new ArrayList<File>();
+		files = new ArrayList<File>();
 		displayDir(dir);
 	}
 	
+	public List<File> getSelectedFiles() {
+		return selectedFiles;
+	}
+
+	public void setSelectedFiles(List<File> selectedFiles) {
+		this.selectedFiles = selectedFiles;
+	}
+
 	/**
 	 * @param dir Pfad zum Verzeichnis, dessen Inhalt dargestellt werden soll.
 	 */
 	public void displayDir(File dir) {
-		rows.clear();
+		files.clear();
 		for (File file: fileSystemView.getFiles(dir, true)) {
-			rows.add(file);
+			files.add(file);
 		}
 	}
 
 	@Override
 	public int getRowCount() {
-		return rows.size();
+		return files.size();
 	}
 
 	@Override
@@ -59,12 +69,12 @@ public class DirectoryContentModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
-		case 0: return fileSystemView.getSystemIcon(rows.get(rowIndex));
-		case 1: return fileSystemView.getSystemDisplayName(rows.get(rowIndex));
-		case 2: return fileSystemView.getSystemDisplayName(rows.get(rowIndex));
-		case 3: return rows.get(rowIndex).length();
+		case 0: return fileSystemView.getSystemIcon(files.get(rowIndex));
+		case 1: return fileSystemView.getSystemDisplayName(files.get(rowIndex));
+		case 2: return fileSystemView.getSystemDisplayName(files.get(rowIndex));
+		case 3: return files.get(rowIndex).length();
 		case 4:	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-				return sdf.format(rows.get(rowIndex).lastModified());
+				return sdf.format(files.get(rowIndex).lastModified());
 		}
 		return null;
 	}
