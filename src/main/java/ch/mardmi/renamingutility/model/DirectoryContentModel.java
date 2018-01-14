@@ -10,11 +10,11 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * Eine Modelle für die Datei Tabelle. Datei Tabelle
- * stellt Inhalt des Verzeichnisses dar. Dafür werden 5
+ * Ein Modell für die Datei Tabelle. Die Datei Tabelle
+ * stellt den Inhalt des Verzeichnisses dar. Dafür werden 5
  * Spalten benutzt: "Icon", "Name", "New Name", "Size", "Modified".
- * In der Spalte "New Name" wird einen hipotetischen neuen Name der
- * übernomenden Datei gezeigt.
+ * In der Spalte "New Name" wird der hipotetische neuen Name der
+ * umzubenennenden Datei gezeigt.
  *
  */
 public class DirectoryContentModel extends AbstractTableModel {

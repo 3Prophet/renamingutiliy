@@ -5,10 +5,16 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -24,6 +30,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
+import ch.mardmi.renaimingutility.action.*;
 
 public class MainFrame extends JFrame {
 
@@ -123,6 +130,14 @@ public class MainFrame extends JFrame {
 		JPanel suffixPanel = new JPanel();
 		JLabel suffixLabel = new JLabel("Suffix");
 		JTextField suffixField = new JTextField(PREFERRED_WIDTH);
+		// ActionListener implementieren, um auf Eingaben zu reagieren
+		suffixField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ActionsAdd.actionAddDoSomething1();
+			}
+		});
 		suffixPanel.add(suffixLabel);
 		suffixPanel.add(suffixField);
 		additionPanel.add(suffixPanel);
@@ -131,6 +146,14 @@ public class MainFrame extends JFrame {
 		JPanel insertionPanel = new JPanel();
 		JLabel insertLabel = new JLabel("Insert");
 		JTextField insertField = new JTextField(PREFERRED_WIDTH);
+		// ActionListener implementieren, um auf Eingaben zu reagieren
+		suffixField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ActionsAdd.actionAddDoSomething1();
+			}
+		});
 		insertionPanel.add(insertLabel);
 		insertionPanel.add(insertField);
 		additionPanel.add(insertionPanel);
@@ -140,8 +163,24 @@ public class MainFrame extends JFrame {
 		positionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		JLabel positionLabel = new JLabel("at pos.");
+		// ActionListener implementieren, um auf Eingaben zu reagieren
+		suffixField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ActionsAdd.actionAddDoSomething1();
+			}
+		});
 		SpinnerModel positionModel = new SpinnerNumberModel(0, -100, 100, 1);
 		JSpinner positionSpinner = new JSpinner(positionModel);
+		// ChangeListener (anstelle ActionListener) implementieren, um auf Eingaben zu reagieren
+		positionSpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				ActionsAdd.actionAddDoSomething1();
+			}
+		});
 		positionPanel.add(positionLabel);
 		positionPanel.add(positionSpinner);
 		additionPanel.add(positionPanel);
@@ -151,6 +190,7 @@ public class MainFrame extends JFrame {
 	
 	private void createRemoveEditionPanel() {
 		JPanel removalPanel = new JPanel();
+
 		removalPanel.setLayout(new BoxLayout(removalPanel, BoxLayout.Y_AXIS));
 		removalPanel.setBorder(BorderFactory.createTitledBorder("Remove"));
 		
@@ -168,12 +208,28 @@ public class MainFrame extends JFrame {
 		SpinnerModel firstNModel = new SpinnerNumberModel(0, -100, 100, 1);
 		JSpinner firstNSpinner = new JSpinner(firstNModel);
 		spinnerPanel.add(firstNSpinner);
+		// ChangeListener (anstelle ActionListener) implementieren, um auf Eingaben zu reagieren
+		firstNSpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				ActionsRemove.actionRemoveDoSomething1();
+			}
+		});
 		
 		JLabel lastNLabel = new JLabel("Last n");
 		spinnerPanel.add(lastNLabel);
 		
 		SpinnerModel lastNModel = new SpinnerNumberModel(0, -100, 100, 1);
 		JSpinner lastNSpinner = new JSpinner(firstNModel);
+		// ChangeListener (anstelle ActionListener) implementieren, um auf Eingaben zu reagieren
+		lastNSpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				ActionsRemove.actionRemoveDoSomething1();
+			}
+		});
 		spinnerPanel.add(lastNSpinner);
 		
 		
@@ -191,6 +247,14 @@ public class MainFrame extends JFrame {
 	private void createButtonPanel() {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton renameButton = new JButton("Rename");
+		// ActionListener implementieren, um auf Eingaben zu reagieren
+		renameButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Button.buttonRename();
+			}
+		});
 		buttonPanel.add(renameButton);
 		southPanel.add(buttonPanel);
 	}
