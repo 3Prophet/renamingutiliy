@@ -132,6 +132,11 @@ public class ApplicationRunner {
 	public void messageInAStatusBarDisplaysNumberOfSelectedFiles() {
 		assertThat(window.label("statusLabel").text(), containsString("2 Selected"));
 	}
+
+	public void providedDirectorySelected() {
+		window.tree("fileTree").requireSelection(
+				TestFactory.getTestDirectory().toAbsolutePath().toString());
+	}
 	
 	
 
