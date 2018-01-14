@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.swing.JFrame;
 
 import ch.mardmi.renamingutility.handlers.ActionKey;
+import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
 import ch.mardmi.renamingutility.handlers.TableSelectionHandler;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 import ch.mardmi.renamingutility.model.StatusModel;
@@ -22,9 +23,8 @@ public class App extends JFrame {
     	
     	Map<ActionKey, Object> handlers = new HashMap<ActionKey, Object>();
     	
-    	TableSelectionHandler tableHandler = new TableSelectionHandler();
-    	
-    	handlers.put(ActionKey.TABLE_SELECTION_HANDLER, tableHandler);
+    	handlers.put(ActionKey.TABLE_SELECTION_HANDLER, new TableSelectionHandler());
+    	handlers.put(ActionKey.DIRECTORY_SELECTION_HANDLER, new DirectorySelectionHandler());
     	
     	MainFrame.createMainFrame(new DirectoryContentModel(Paths.get("/").toFile()), 
      		   new StatusModel(), handlers);

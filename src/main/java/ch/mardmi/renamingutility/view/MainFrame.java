@@ -25,11 +25,16 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 import ch.mardmi.renamingutility.handlers.AbstractHandler;
 import ch.mardmi.renamingutility.handlers.ActionKey;
+import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 import ch.mardmi.renamingutility.model.StatusModel;
+import ch.mardmi.renamingutility.model.FolderTreeCellRenderer;
 
 public class MainFrame extends JFrame {
 
@@ -46,9 +51,9 @@ public class MainFrame extends JFrame {
 	public JTable getFileTable() {
 		return fileTable;
 	}
-
-	// Datei Baum
-	private JTree fileTree;
+	
+	
+	private JScrollPane fileTreePane;
 	
 	// Verzeichnis Modelle (wird für die Darstellung eines Verzeichnises verwendet)
 	private DirectoryContentModel directoryModel;
@@ -60,6 +65,17 @@ public class MainFrame extends JFrame {
 	private StatusModel statusModel;
 
 	private ListSelectionModel listSelectionModel;
+
+	private FileSystemView fileSystemView;
+
+	public FileSystemView getFileSystemView() {
+		return fileSystemView;
+	}
+
+
+	private File rootDirectory;
+
+	private JTree fileTree;
 
 	public StatusModel getStatusModel() {
 		return statusModel;
@@ -111,7 +127,7 @@ public class MainFrame extends JFrame {
 		createFileTable();
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				new JScrollPane(fileTree), new JScrollPane(fileTable));
+				new JScrollPane(fileTreePane), new JScrollPane(fileTable));
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(150);
 		container.add(BorderLayout.NORTH, splitPane );
@@ -235,14 +251,49 @@ public class MainFrame extends JFrame {
 	}
 
 	private void createFileTreeNavigation() {
-		// TODO Auto-generated method stub
+		// Wurzel Knoten vom Dateibaum
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+
+		// Zugang zu Dateisystem
+		fileSystemView = FileSystemView.getFileSystemView();
+
+		// Bekommen von Wurzelverzeichnisse
+		File[] fileSystemRoot = fileSystemView.getRoots();
+
+		for (File rootDir: fileSystemRoot) {
+			DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(rootDir);
+			rootDirectory = rootDir;
+			root.add(rootNode);
+			for (File file: fileSystemView.getFiles(rootDir, true)) {
+				if (file.isDirectory()) {
+					DefaultMutableTreeNode node = new DefaultMutableTreeNode(file);
+					rootNode.add(node);
+				}
+			}
+		}
+
+		DefaultTreeModel treeModel = new DefaultTreeModel(root);
+
+		fileTree = new JTree(treeModel);
+		fileTree.setName("fileTree");
 		
+		fileTree.setRootVisible(false);
+		fileTree.expandRow(0);
+		fileTree.setCellRenderer(new FolderTreeCellRenderer());
+		//tree.addTreeWillExpandListener(new DirectoryLazyLoadCommand());
+		//tree.addTreeExpansionListener(new LazyCommand());
+
+		fileTreePane = new JScrollPane(fileTree);
+
 	}
 
 	public  void setHandlers(Map<ActionKey, Object> handlers) {
 		listSelectionModel.addListSelectionListener(
     			(ListSelectionListener) handlers.get(
-    					ActionKey.TABLE_SELECTION_HANDLER));	
+    					ActionKey.TABLE_SELECTION_HANDLER));
+		fileTree.addTreeSelectionListener(
+				(DirectorySelectionHandler) handlers.get(
+						ActionKey.DIRECTORY_SELECTION_HANDLER));
 	}
 	
 	
