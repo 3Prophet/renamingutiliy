@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.io.File;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -20,20 +21,32 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ListSelectionListener;
 
+import ch.mardmi.renamingutility.handlers.AbstractHandler;
+import ch.mardmi.renamingutility.handlers.ActionKey;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
+import ch.mardmi.renamingutility.model.StatusModel;
 
 public class MainFrame extends JFrame {
 
 	private static final int PREFERRED_WIDTH = 10;
+	
+	// Action Handlers
+	private static Map<ActionKey, Object> handlers;
 	
 	private Container container;
 	
 	// Tabelle mit dem Inhalt des Verzeichnises
 	private JTable fileTable;
 	
+	public JTable getFileTable() {
+		return fileTable;
+	}
+
 	// Datei Baum
 	private JTree fileTree;
 	
@@ -44,8 +57,21 @@ public class MainFrame extends JFrame {
 
 	private JPanel editorPanel;
 
-	public MainFrame(DirectoryContentModel directoryModel) {
+	private StatusModel statusModel;
+
+	private ListSelectionModel listSelectionModel;
+
+	public StatusModel getStatusModel() {
+		return statusModel;
+	}
+	
+	public void setStatusModel(StatusModel statusModel) {
+		this.statusModel = statusModel;
+	}
+
+	public MainFrame(DirectoryContentModel directoryModel, StatusModel statusModel) {
 		super();
+		this.statusModel = statusModel;
 		this.directoryModel = directoryModel;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		container = this.getContentPane();
@@ -65,7 +91,7 @@ public class MainFrame extends JFrame {
 	private void createStatusBar() {
 		JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		statusPanel.setBorder(BorderFactory.createLoweredBevelBorder());
-		JLabel statusLabel = new JLabel("Some Text");
+		StatusLabel statusLabel = StatusLabel.createStatusLabel(statusModel);
 		statusLabel.setName("statusLabel");
 		statusPanel.add(statusLabel);
 		southPanel.add(statusPanel);
@@ -186,6 +212,10 @@ public class MainFrame extends JFrame {
 	private void createFileTable() {
 		fileTable = new JTable(directoryModel);	
 		fileTable.setName("fileTable");
+		listSelectionModel = fileTable.getSelectionModel();
+        listSelectionModel.setSelectionMode(
+                ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        
 	}
 	
 	private void createButtonPanel() {
@@ -207,6 +237,29 @@ public class MainFrame extends JFrame {
 	private void createFileTreeNavigation() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public  void setHandlers(Map<ActionKey, Object> handlers) {
+		listSelectionModel.addListSelectionListener(
+    			(ListSelectionListener) handlers.get(
+    					ActionKey.TABLE_SELECTION_HANDLER));	
+	}
+	
+	
+	/**
+	 * Factory Metode für GBO Erstellung
+	 * 
+	 * @param dirModel Das Model für die Ordnertabelle
+	 * @param statusModel Das Model für die Statuszeile
+	 * @param handlers Action Listeners für vershiedene Komponenten
+	 * @return GBO von der Anwendung
+	 */
+	public static MainFrame createMainFrame (DirectoryContentModel dirModel, 
+			StatusModel statusModel, Map<ActionKey, Object> handlers) {
+		MainFrame frame = new MainFrame(dirModel, statusModel);
+		AbstractHandler.setGUI(frame);
+		frame.setHandlers(handlers);
+		return frame;
 	}
 	
 	
