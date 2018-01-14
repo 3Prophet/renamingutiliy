@@ -1,12 +1,21 @@
 package ch.mardmi.renamingutility;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 import org.assertj.swing.data.TableCell;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 
+import ch.mardmi.renamingutility.handlers.ActionKey;
+import ch.mardmi.renamingutility.handlers.TableSelectionHandler;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
+import ch.mardmi.renamingutility.model.StatusModel;
 import ch.mardmi.renamingutility.view.MainFrame;
 
 /**
@@ -23,18 +32,25 @@ public class ApplicationRunner {
 	
 	private Path testPath;
 	
+	MainFrame frame;
+	
 	private DirectoryContentModel directoryModel;
 	
 	public ApplicationRunner(Path testPath) {
 		window = null;
 		this.testPath = testPath;
-		
 	}
 	
 	public void start() {
-		
-		MainFrame frame = GuiActionRunner.execute(() -> new MainFrame(new DirectoryContentModel(
-				testPath.toFile())));
+		Map<ActionKey, Object> handlers = new HashMap<ActionKey, Object>();
+    	
+    	TableSelectionHandler tableHandler = new TableSelectionHandler();
+    	
+    	handlers.put(ActionKey.TABLE_SELECTION_HANDLER, tableHandler);
+    	
+		MainFrame frame = GuiActionRunner.execute(() -> 
+		MainFrame.createMainFrame(new DirectoryContentModel(testPath.toFile()), 
+	     		   new StatusModel(), handlers));
 		window = new FrameFixture(frame);
 		window.show();
 	}
@@ -54,7 +70,7 @@ public class ApplicationRunner {
 	public void selectFilesInADirectory() {
 		window.table("fileTable").selectRows(0, 1);
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,7 +123,16 @@ public class ApplicationRunner {
 		
 		window.table("fileTable").valueAt(
 				TableCell.row(1).column(1)).equals("newfile2.txt");
-		
 	}
+
+	public void setStatusModel(StatusModel statusModel) {
+		frame.setStatusModel(statusModel);	
+	}
+
+	public void messageInAStatusBarDisplaysNumberOfSelectedFiles() {
+		assertThat(window.label("statusLabel").text(), containsString("2 Selected"));
+	}
+	
+	
 
 }

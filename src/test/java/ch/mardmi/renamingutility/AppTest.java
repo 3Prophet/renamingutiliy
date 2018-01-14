@@ -1,11 +1,16 @@
 package ch.mardmi.renamingutility;
 
+import static org.mockito.Mockito.*;
+
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.mardmi.renamingutility.handlers.ActionKey;
+import ch.mardmi.renamingutility.handlers.TableSelectionHandler;
+import ch.mardmi.renamingutility.model.StatusModel;
 import ch.mardmi.renamingutility.view.MainFrame;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,7 +21,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /** 
  * Ende zu Ende Testen von der Application
@@ -57,17 +64,45 @@ public class AppTest {
 		}
 		Files.delete(testPath);
 	}
+	/**
+	@Test
+	public void selectingFilesInDirectoryTriggersTableSelectionHadler() throws InterruptedException {
+		TableSelectionHandler selectionHandler = mock(TableSelectionHandler.class);
+		Map<ActionKey, Object> handlers = new HashMap<ActionKey, Object>();
+		handlers.put(ActionKey.TABLE_SELECTION_HANDLER, selectionHandler);
+		application.setHandlers(handlers);
+		application.hasStarted();
+		application.selectFilesInADirectory();
+		verify(selectionHandler, times(1)).valueChanged(any());
+		
+	}
 	
+	
+	@Test
+	public void selectingFilesInDirectoryInitiatesStatusModelChange() throws InterruptedException {
+		StatusModel statusModel = mock(StatusModel.class);
+		application.setStatusModel(statusModel);
+		application.hasStarted();
+		application.selectFilesInADirectory();
+		verify(statusModel).rowsSelected(2);
+	}*/
 	
 	/**
-	 * Scenario:
-	 * 
+	 * Bestimmt, dass when 2 Reihe von Dateitabelle selektiert sind,
+	 * enthaltet Status Pane Text "2 Selected"
 	 * @throws InterruptedException
 	 */
 	@Test
+	public void selectingFilesInDirectoryChangesTextInStatusPanel() throws InterruptedException {
+		application.hasStarted();
+		application.selectFilesInADirectory();
+		application.messageInAStatusBarDisplaysNumberOfSelectedFiles();
+	}
+	
+	@Test
 	public void endToEndTest() throws InterruptedException {
 		application.hasStarted();
-		application.numberOfFilesInADirectoryIsShown();
+		//application.numberOfFilesInADirectoryIsShown();
 		
 		application.selectFilesInADirectory();
 		application.numberOfFilesAndNumberOfSelectedFilesIsShown();
