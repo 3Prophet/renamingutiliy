@@ -3,9 +3,6 @@ package ch.mardmi.renamingutility.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-
 import ch.mardmi.renamingutility.handlers.StatusModelListener;
 
 public class StatusModel {

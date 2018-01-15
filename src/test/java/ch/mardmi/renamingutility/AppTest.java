@@ -1,19 +1,8 @@
 package ch.mardmi.renamingutility;
 
-import static org.mockito.Mockito.*;
-
-import org.assertj.swing.edt.GuiActionRunner;
-import org.assertj.swing.fixture.FrameFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import ch.mardmi.renamingutility.handlers.ActionKey;
-import ch.mardmi.renamingutility.handlers.TableSelectionHandler;
-import ch.mardmi.renamingutility.model.StatusModel;
-import ch.mardmi.renamingutility.view.MainFrame;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,9 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /** 
  * Ende zu Ende Testen von der Application
