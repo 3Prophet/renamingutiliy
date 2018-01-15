@@ -8,19 +8,25 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class DirectorySelectionHandler extends AbstractHandler implements TreeSelectionListener {
 
-		@Override
-		public void valueChanged(TreeSelectionEvent e) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent(); 
-			lazyLoadSelectedDirectory(node);
-		}
-		
-		private void lazyLoadSelectedDirectory(DefaultMutableTreeNode node) {
-			File dir = (File) node.getUserObject();
-			File[] files = gui.getFileSystemView().getFiles(dir, true);
-			for (File file: files) {
-				if (file.isDirectory()) {
-					node.add(new DefaultMutableTreeNode(file));
-				}
+	/**
+	 * Selektiertes Verzeichniss
+	 */
+	private File selectedDir;
+
+	@Override
+	public void valueChanged(TreeSelectionEvent e) {
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent(); 
+		selectedDir = (File) node.getUserObject();
+		lazyLoadSelectedDirectory(node);
+		gui.getDirectoryModel().displayDir(selectedDir);
+	}
+
+	private void lazyLoadSelectedDirectory(DefaultMutableTreeNode node) {
+		File[] files = gui.getFileSystemView().getFiles(selectedDir, true);
+		for (File file: files) {
+			if (file.isDirectory()) {
+				node.add(new DefaultMutableTreeNode(file));
 			}
-		} 
+		}
+	} 
 }

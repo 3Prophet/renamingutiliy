@@ -32,6 +32,7 @@ import javax.swing.tree.DefaultTreeModel;
 import ch.mardmi.renamingutility.handlers.AbstractHandler;
 import ch.mardmi.renamingutility.handlers.ActionKey;
 import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
+import ch.mardmi.renamingutility.handlers.TableModelChangeHandler;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 import ch.mardmi.renamingutility.model.StatusModel;
 import ch.mardmi.renamingutility.model.FolderTreeCellRenderer;
@@ -227,6 +228,7 @@ public class MainFrame extends JFrame {
 
 	private void createFileTable() {
 		fileTable = new JTable(directoryModel);	
+		directoryModel.addTableModelListener(new TableModelChangeHandler());
 		fileTable.setName("fileTable");
 		listSelectionModel = fileTable.getSelectionModel();
         listSelectionModel.setSelectionMode(
@@ -278,6 +280,7 @@ public class MainFrame extends JFrame {
 		fileTree.setName("fileTree");
 		
 		fileTree.setRootVisible(false);
+		fileTree.setSelectionRow(0);
 		fileTree.expandRow(0);
 		fileTree.setCellRenderer(new FolderTreeCellRenderer());
 		//tree.addTreeWillExpandListener(new DirectoryLazyLoadCommand());

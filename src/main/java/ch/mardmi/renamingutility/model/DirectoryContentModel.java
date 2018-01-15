@@ -52,8 +52,11 @@ public class DirectoryContentModel extends AbstractTableModel {
 	public void displayDir(File dir) {
 		files.clear();
 		for (File file: fileSystemView.getFiles(dir, true)) {
-			files.add(file);
+			if (file.isFile()) {
+				files.add(file);
+			}
 		}
+		fireTableDataChanged();
 	}
 
 	@Override
