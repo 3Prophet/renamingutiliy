@@ -37,6 +37,7 @@ import ch.mardmi.renamingutility.handlers.AbstractHandler;
 import ch.mardmi.renamingutility.handlers.ActionKey;
 import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
 import ch.mardmi.renamingutility.handlers.TableModelChangeHandler;
+import ch.mardmi.renamingutility.handlers.UserActionListener;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 import ch.mardmi.renamingutility.model.StatusModel;
 import ch.mardmi.renamingutility.model.FolderTreeCellRenderer;
@@ -50,17 +51,21 @@ public class MainFrame extends JFrame {
 
 	private Container container;
 
-	// Tabelle mit dem Inhalt des Verzeichnises
+	// Tabelle mit dem Inhalt des Verzeichnisses
 	private JTable fileTable;
 
+	/**
+	 * Erstellt die die tabellarische Ansicht für die Dateien
+	 * @return fileTable
+	 */
 	public JTable getFileTable() {
 		return fileTable;
 	}
 
 	private JScrollPane fileTreePane;
 
-	// Verzeichnis Modelle (wird für die Darstellung eines Verzeichnises
-	// verwendet)
+	// Verzeichnis-Modell
+	// (wird für die Darstellung eines Verzeichnisses verwendet)
 	private DirectoryContentModel directoryModel;
 
 	private JPanel southPanel;
@@ -80,6 +85,98 @@ public class MainFrame extends JFrame {
 	private File rootDirectory;
 
 	private JTree fileTree;
+
+	private JCheckBox useOptionAddPanel;
+
+	/**
+	 * Gibt zurück, ob das AddPanel aktiv ist
+	 * @return boolean
+	 */
+	public boolean getUseOptionAddPanel() {
+		return useOptionAddPanel.isSelected();
+	}
+
+	private JCheckBox useOptionRemovePanel;
+
+	/**
+	 * Gibt zurück, ob das RemovePanel aktiv ist
+	 * @return boolean
+	 */
+	public boolean getUseOptionRemovePanel() {
+		return useOptionRemovePanel.isSelected();
+	}
+
+	private JTextField prefixField;
+
+	/**
+	 * Gibt den Wert aus dem Feld prefixField zurück
+	 * @return String
+	 */
+	public String getPrefixFieldContent() {
+		return prefixField.getText();
+	}
+
+	private JTextField suffixField;
+
+	/**
+	 * Gibt den Wert aus dem Feld suffixField zurück
+	 * @return String
+	 */
+	public String getSuffixFieldContent() {
+		return suffixField.getText();
+	}
+
+	private JTextField insertField;
+
+	/**
+	 * Gibt den Wert aus dem Feld InsertField zurück
+	 * @return String
+	 */
+	public String getInsertFieldContent() {
+		return insertField.getText();
+	}
+
+	private JSpinner positionSpinner;
+
+	public JSpinner getPositionSpinner() {
+		return positionSpinner;
+	}
+
+	/**
+	 * Gibt den numerischen Wert aus dem Feld positionSpinner zurück
+	 * @return int
+	 */
+	public int getPositionSpinnerValue() {
+		return (int) positionSpinner.getValue();
+	}
+
+	private JSpinner firstNSpinner;
+
+	public JSpinner getFirstNSpinner() {
+		return firstNSpinner;
+	}
+
+	/**
+	 * Gibt den numerischen Wert aus dem Feld firstNSpinner zurück
+	 * @return int
+	 */
+	public int getFirstSpinnerValue() {
+		return (int) firstNSpinner.getValue();
+	}
+
+	private JSpinner lastNSpinner;
+
+	public JSpinner getLastSpinner() {
+		return lastNSpinner;
+	}
+
+	/**
+	 * Gibt den numerischen Wert aus dem Feld lastNSpinner zurück
+	 * @return int
+	 */
+	public int getLastSpinnerValue() {
+		return (int) lastNSpinner.getValue();
+	}
 
 	public StatusModel getStatusModel() {
 		return statusModel;
@@ -105,8 +202,8 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
-	 * Erstellt Status Pane, die zeiegt Anzahl der Dateien und Selektierte
-	 * Dataien an.
+	 * Erstellt Status Pane, welche die Anzahl der Dateien und 
+	 * der selektierten Dateien anzeigt.
 	 */
 	private void createStatusBar() {
 		JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -115,7 +212,6 @@ public class MainFrame extends JFrame {
 		statusLabel.setName("statusLabel");
 		statusPanel.add(statusLabel);
 		southPanel.add(statusPanel);
-
 	}
 
 	public DirectoryContentModel getDirectoryModel() {
@@ -123,8 +219,8 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
-	 * Erstellung von der Panelle mit dem Verzeichnis Baum und Ordner/Datei
-	 * Tabelle, die stellt den Inhalt des gewählten Verzeichnises dar.
+	 * Erstellung der Panels mit dem Verzeichnisbaum und Ordner-/Datei-
+	 * Tabelle, welche den Inhalt des gewählten Verzeichnisses darstellt.
 	 */
 	private void createNavigationPanel() {
 		createFileTreeNavigation();
@@ -149,80 +245,43 @@ public class MainFrame extends JFrame {
 		additionPanel.setLayout(new BoxLayout(additionPanel, BoxLayout.Y_AXIS));
 		additionPanel.setBorder(BorderFactory.createTitledBorder("Add"));
 
-		// Erstellung von CheckBox für die Aktivierung von Add Option Benutzung
+		// CheckBox erstellen, wird für die Aktivierung des Add-Panels verwendet
 		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JCheckBox useOption = new JCheckBox();
-		checkBoxPanel.add(useOption);
+		useOptionAddPanel = new JCheckBox();
+		checkBoxPanel.add(useOptionAddPanel);
 		additionPanel.add(checkBoxPanel);
 
-		// Erstellung von Panel für Prefix Addierung
+		// Panel für das Eingabefeld 'Prefix' erstellen
 		JPanel prefixPanel = new JPanel();
 		JLabel prefixLabel = new JLabel("Prefix");
-		JTextField prefixField = new JTextField(PREFERRED_WIDTH);
-		// ActionListener implementieren, um auf Eingaben zu reagieren
-		prefixField.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (useOption.isEnabled()) {
-//					ActionsAdd.actionAddDoSomething1();
-				}
-			}
-		});
+		prefixField = new JTextField(PREFERRED_WIDTH);
 		prefixPanel.add(prefixLabel);
 		prefixPanel.add(prefixField);
 		additionPanel.add(prefixPanel);
 
-		// Erstellung von Panel für Suffix Addierung
+		// Panel für das Eingabefeld 'Suffix' erstellen
 		JPanel suffixPanel = new JPanel();
 		JLabel suffixLabel = new JLabel("Suffix");
-		JTextField suffixField = new JTextField(PREFERRED_WIDTH);
-		// ActionListener implementieren, um auf Eingaben zu reagieren
-		suffixField.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (useOption.isEnabled()) {
-					//ActionsAdd.actionAddDoSomething1();
-				}
-			}
-		});
+		suffixField = new JTextField(PREFERRED_WIDTH);
 		suffixPanel.add(suffixLabel);
 		suffixPanel.add(suffixField);
 		additionPanel.add(suffixPanel);
 
-		// Erstellung von Panel für Text Einfügung
+		// Panel für das Eingabefeld 'Insert' erstellen
 		JPanel insertionPanel = new JPanel();
 		JLabel insertLabel = new JLabel("Insert");
-		JTextField insertField = new JTextField(PREFERRED_WIDTH);
-		// ActionListener implementieren, um auf Eingaben zu reagieren
-		insertField.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (useOption.isEnabled()) {
-//					ActionsAdd.actionAddDoSomething1();
-				}
-			}
-		});
+		insertField = new JTextField(PREFERRED_WIDTH);
 		insertionPanel.add(insertLabel);
 		insertionPanel.add(insertField);
 		additionPanel.add(insertionPanel);
 
-		// Erstellung von Panel für Text Stelle Eingabe
+		// Panel für den Spinner 'Position' erstellen
 		JPanel positionPanel = new JPanel();
 		positionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		JLabel positionLabel = new JLabel("at pos.");
 		SpinnerModel positionModel = new SpinnerNumberModel(0, -100, 100, 1);
-		JSpinner positionSpinner = new JSpinner(positionModel);
-		// ChangeListener (anstelle ActionListener) implementieren, um auf
-		// Eingaben zu reagieren
-		positionSpinner.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				if (useOption.isEnabled()) {
-					//ActionsAdd.actionAddDoSomething1();
-				}
-			}
-		});
+		positionSpinner = new JSpinner(positionModel);
 		positionPanel.add(positionLabel);
 		positionPanel.add(positionSpinner);
 		additionPanel.add(positionPanel);
@@ -235,53 +294,33 @@ public class MainFrame extends JFrame {
 		removalPanel.setLayout(new BoxLayout(removalPanel, BoxLayout.Y_AXIS));
 		removalPanel.setBorder(BorderFactory.createTitledBorder("Remove"));
 
-		// Erstellung von CheckBox für die Aktivierung von Remove Option
-		// Benutzung
+		// CheckBox erstellen, wird für die Aktivierung des Remove-Panels verwendet
 		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JCheckBox useOption = new JCheckBox();
-		checkBoxPanel.add(useOption);
+		useOptionRemovePanel = new JCheckBox();
+		checkBoxPanel.add(useOptionRemovePanel);
 		removalPanel.add(checkBoxPanel);
 
 		JPanel spinnerPanel = new JPanel(new GridLayout(0, 4));
 
+		// Panel für den Spinner 'First n' erstellen
 		JLabel firstNLabel = new JLabel("First n");
 		spinnerPanel.add(firstNLabel);
 
 		SpinnerModel firstNModel = new SpinnerNumberModel(0, -100, 100, 1);
-		JSpinner firstNSpinner = new JSpinner(firstNModel);
-		// ChangeListener (anstelle ActionListener) implementieren, um auf
-		// Eingaben zu reagieren
-		firstNSpinner.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				if (useOption.isEnabled()) {
-					//ActionsAdd.actionAddDoSomething1();
-				}
-			}
-		});
+		firstNSpinner = new JSpinner(firstNModel);
 		spinnerPanel.add(firstNSpinner);
 
+		// Panel für den Spinner 'Last n' erstellen
 		JLabel lastNLabel = new JLabel("Last n");
 		spinnerPanel.add(lastNLabel);
 
 		SpinnerModel lastNModel = new SpinnerNumberModel(0, -100, 100, 1);
-		JSpinner lastNSpinner = new JSpinner(lastNModel);
-		// ChangeListener (anstelle ActionListener) implementieren, um auf
-		// Eingaben zu reagieren
-		lastNSpinner.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				if (useOption.isEnabled()) {
-					//ActionsAdd.actionAddDoSomething1();
-				}
-			}
-		});
+		lastNSpinner = new JSpinner(lastNModel);
 		spinnerPanel.add(lastNSpinner);
 
 		removalPanel.add(spinnerPanel);
 
 		editorPanel.add(removalPanel);
-
 	}
 
 	private void createFileTable() {
@@ -290,7 +329,6 @@ public class MainFrame extends JFrame {
 		fileTable.setName("fileTable");
 		listSelectionModel = fileTable.getSelectionModel();
 		listSelectionModel.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
 	}
 
 	private void createButtonPanel() {
@@ -309,13 +347,13 @@ public class MainFrame extends JFrame {
 	}
 
 	private void createFileTreeNavigation() {
-		// Wurzel Knoten vom Dateibaum
+		// Wurzelknoten vom Dateisystem
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 
-		// Zugang zu Dateisystem
+		// Zugang zum Dateisystem
 		fileSystemView = FileSystemView.getFileSystemView();
 
-		// Bekommen von Wurzelverzeichnisse
+		// Wurzelverzeichnis übergeben
 		File[] fileSystemRoot = fileSystemView.getRoots();
 
 		for (File rootDir : fileSystemRoot) {
@@ -343,7 +381,6 @@ public class MainFrame extends JFrame {
 		// tree.addTreeExpansionListener(new LazyCommand());
 
 		fileTreePane = new JScrollPane(fileTree);
-
 	}
 
 	public void setHandlers(Map<ActionKey, Object> handlers) {
@@ -351,17 +388,29 @@ public class MainFrame extends JFrame {
 				.addListSelectionListener((ListSelectionListener) handlers.get(ActionKey.TABLE_SELECTION_HANDLER));
 		fileTree.addTreeSelectionListener(
 				(DirectorySelectionHandler) handlers.get(ActionKey.DIRECTORY_SELECTION_HANDLER));
+		prefixField.getDocument().addDocumentListener(
+				(UserActionListener) handlers.get(ActionKey.INPUT_LISTENER));
+		suffixField.getDocument().addDocumentListener(
+				(UserActionListener) handlers.get(ActionKey.INPUT_LISTENER));
+		insertField.getDocument().addDocumentListener(
+				(UserActionListener) handlers.get(ActionKey.INPUT_LISTENER));
+		positionSpinner.addChangeListener(
+				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
+		firstNSpinner.addChangeListener(
+				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
+		lastNSpinner.addChangeListener(
+				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
 	}
 
 	/**
-	 * Factory Metode für GBO Erstellung
+	 * Factory Methode für GBO Erstellung
 	 * 
 	 * @param dirModel
-	 *            Das Model für die Ordnertabelle
+	 *            Das Model für die Ordner-Tabelle
 	 * @param statusModel
 	 *            Das Model für die Statuszeile
 	 * @param handlers
-	 *            Action Listeners für vershiedene Komponenten
+	 *            Action Listeners für verschiedene Komponenten
 	 * @return GBO von der Anwendung
 	 */
 	public static MainFrame createMainFrame(DirectoryContentModel dirModel, StatusModel statusModel,
