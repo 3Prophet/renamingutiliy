@@ -10,18 +10,18 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * Eine Modelle für die Datei Tabelle. Datei Tabelle
- * stellt Inhalt des Verzeichnisses dar. Dafür werden 5
- * Spalten benutzt: "Icon", "Name", "New Name", "Size", "Modified".
- * In der Spalte "New Name" wird einen hipotetischen neuen Name der
- * übernomenden Datei gezeigt.
+ * Ein Modell für die Datei-Tabelle. Diese stellt den Inhalt des
+ * Verzeichnisses dar. Dafür werden 5 Spalten verwendet:
+ * "Icon", "Name", "New Name", "Size", "Modified".
+ * In der Spalte "New Name" wird ein hipotetischer neuer Name der
+ * umbenannten Datei angezeigt.
  *
  */
 public class DirectoryContentModel extends AbstractTableModel {
 
 	private String[] columnNames = {"Icon", "Name", "New Name", "Size", "Modified"};
 	
-	// Ihnalt des Verzeichnises
+	// Verzeichnisinhalt
 	private List<File> files;
 	
 	private List<File> selectedFiles;
@@ -29,7 +29,7 @@ public class DirectoryContentModel extends AbstractTableModel {
 	private FileSystemView fileSystemView;
 	
 	/**
-	 * @param dir Pfad zum Verzeichnis, dessen Inhalt dargestellt werden soll.
+	 * @param dir Verzeichnispfad, dessen Inhalt dargestellt werden soll.
 	 */
 	public DirectoryContentModel(File dir) {
 		super();
@@ -38,10 +38,16 @@ public class DirectoryContentModel extends AbstractTableModel {
 		displayDir(dir);
 	}
 	
+	/**
+	 * @return selectedFiles Liste der ausgewählten Dateien
+	 */
 	public List<File> getSelectedFiles() {
 		return selectedFiles;
 	}
 
+	/**
+	 * @param selectedFiles Setze Datei-Auswahl
+	 */
 	public void setSelectedFiles(List<File> selectedFiles) {
 		this.selectedFiles = selectedFiles;
 	}

@@ -4,7 +4,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- * Aktualiziert Status Modelle, wann einige Reichen von Datei Tabelle selektiert werden.
+ * Aktualisiert Status-Modelle, wenn einige Reichen von Datei-Tabelle ausgewählt werden.
  * 
  * {@link ch.mardmi.renamingutility.model.StatusModel}
  *

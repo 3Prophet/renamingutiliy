@@ -6,11 +6,15 @@ import ch.mardmi.renamingutility.handlers.StatusModelListener;
 import ch.mardmi.renamingutility.model.StatusModel;
 
 /**
- * Label um Gesamtanzahl von Dateien im Ordner und Anzahlt der selektierten Dateien zu zeigen,
+ * Label um Gesamtanzahl von Dateien im Ordner und Anzahl der selektierten Dateien anzuzeigen,
  * z.B.  2 Files(1 Selected)
  */
 public class StatusLabel extends JLabel implements StatusModelListener {
 	
+	/**
+	 * 
+	 * @param model Statuszeile für die Anzeige zurückgeben 
+	 */
 	public StatusLabel(StatusModel model) {
 		super(model.toString());
 	}
