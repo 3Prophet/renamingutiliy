@@ -22,9 +22,11 @@ public class DirectoryContentModel extends AbstractTableModel {
 	private String[] columnNames = {"Icon", "Name", "New Name", "Size", "Modified"};
 	
 	// Verzeichnisinhalt
-	private List<File> files;
+	//private List<File> files;
 	
-	private List<File> selectedFiles;
+	private List<FileState> files;
+	
+	//private List<File> selectedFiles;
 	
 	private FileSystemView fileSystemView;
 	
@@ -34,23 +36,26 @@ public class DirectoryContentModel extends AbstractTableModel {
 	public DirectoryContentModel(File dir) {
 		super();
 		fileSystemView = FileSystemView.getFileSystemView();
-		files = new ArrayList<File>();
+		//files = new ArrayList<File>();
+		files = new ArrayList<FileState>();
 		displayDir(dir);
 	}
-	
+	/**
 	/**
 	 * @return selectedFiles Liste der ausgewählten Dateien
 	 */
+	/**
 	public List<File> getSelectedFiles() {
 		return selectedFiles;
-	}
+	}*/
 
 	/**
 	 * @param selectedFiles Setze Datei-Auswahl
 	 */
+	/**
 	public void setSelectedFiles(List<File> selectedFiles) {
 		this.selectedFiles = selectedFiles;
-	}
+	}*/
 
 	/**
 	 * @param dir Pfad zum Verzeichnis, dessen Inhalt dargestellt werden soll.
@@ -59,7 +64,7 @@ public class DirectoryContentModel extends AbstractTableModel {
 		files.clear();
 		for (File file: fileSystemView.getFiles(dir, true)) {
 			if (file.isFile()) {
-				files.add(file);
+				files.add(new FileState(file));
 			}
 		}
 		fireTableDataChanged();
@@ -78,12 +83,12 @@ public class DirectoryContentModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
-		case 0: return fileSystemView.getSystemIcon(files.get(rowIndex));
-		case 1: return fileSystemView.getSystemDisplayName(files.get(rowIndex));
-		case 2: return fileSystemView.getSystemDisplayName(files.get(rowIndex));
-		case 3: return files.get(rowIndex).length();
+		case 0: return fileSystemView.getSystemIcon(files.get(rowIndex).getCurrentFileState());
+		case 1: return fileSystemView.getSystemDisplayName(files.get(rowIndex).getCurrentFileState());
+		case 2: return fileSystemView.getSystemDisplayName(files.get(rowIndex).getNewFileState());
+		case 3: return files.get(rowIndex).getCurrentFileState().length();
 		case 4:	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-				return sdf.format(files.get(rowIndex).lastModified());
+				return sdf.format(files.get(rowIndex).getCurrentFileState().lastModified());
 		}
 		return null;
 	}

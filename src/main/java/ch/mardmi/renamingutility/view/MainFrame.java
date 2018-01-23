@@ -33,6 +33,7 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import ch.mardmi.renamingutility.command.AbstractCommand;
 import ch.mardmi.renamingutility.handlers.AbstractHandler;
 import ch.mardmi.renamingutility.handlers.ActionKey;
 import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
@@ -418,7 +419,7 @@ public class MainFrame extends JFrame {
 		MainFrame frame = new MainFrame(dirModel, statusModel);
 		AbstractHandler.setGUI(frame);
 		frame.setHandlers(handlers);
+		AbstractCommand.setDirectoryModel(dirModel);
 		return frame;
 	}
-
 }
