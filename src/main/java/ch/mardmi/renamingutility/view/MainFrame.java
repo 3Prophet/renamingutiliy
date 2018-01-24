@@ -42,7 +42,7 @@ import ch.mardmi.renamingutility.model.DirectoryContentModel;
 import ch.mardmi.renamingutility.model.StatusModel;
 import ch.mardmi.renamingutility.model.FolderTreeCellRenderer;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements ActionListener {
 
 	private static final int PREFERRED_WIDTH = 10;
 
@@ -333,8 +333,21 @@ public class MainFrame extends JFrame {
 
 	private void createButtonPanel() {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		
+		// Clear-Button anlegen
+		JButton clearButton = new JButton("Clear Input");
+		clearButton.setActionCommand("clear");
+		buttonPanel.add(clearButton);		
+		
+		// Rename-Button anlegen
 		JButton renameButton = new JButton("Rename");
+		renameButton.setActionCommand("rename");
 		buttonPanel.add(renameButton);
+		
+		// Listen for actions on buttons
+		clearButton.addActionListener(this);
+		renameButton.addActionListener(this);
+		
 		southPanel.add(buttonPanel);
 	}
 
@@ -382,6 +395,25 @@ public class MainFrame extends JFrame {
 
 		fileTreePane = new JScrollPane(fileTree);
 	}
+	
+	public void actionPerformed(ActionEvent e) {
+		if ("clear".equals(e.getActionCommand())) {
+			// Add-Panel initialisieren
+			useOptionAddPanel.setSelected(false);
+			prefixField.setText("");
+			suffixField.setText("");
+			insertField.setText("");
+			positionSpinner.setValue(0);
+			
+			// Remove-Panel initialisieren
+			useOptionRemovePanel.setSelected(false);
+			firstNSpinner.setValue(0);
+			lastNSpinner.setValue(0);
+		} else {
+			// Dateien umbennen
+			System.out.println("Dateien umbenennen ...");
+		}
+	}
 
 	public void setHandlers(Map<ActionKey, Object> handlers) {
 		listSelectionModel
@@ -400,6 +432,7 @@ public class MainFrame extends JFrame {
 				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
 		lastNSpinner.addChangeListener(
 				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
+		
 	}
 
 	/**

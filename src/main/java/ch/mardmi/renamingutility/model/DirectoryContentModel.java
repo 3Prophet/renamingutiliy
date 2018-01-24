@@ -51,7 +51,7 @@ public class DirectoryContentModel extends AbstractTableModel {
 	public void setSelectedFiles(List<File> selectedFiles) {
 		this.selectedFiles = selectedFiles;
 	}
-
+	
 	/**
 	 * @param dir Pfad zum Verzeichnis, dessen Inhalt dargestellt werden soll.
 	 */
@@ -81,6 +81,7 @@ public class DirectoryContentModel extends AbstractTableModel {
 		case 0: return fileSystemView.getSystemIcon(files.get(rowIndex));
 		case 1: return fileSystemView.getSystemDisplayName(files.get(rowIndex));
 		case 2: return fileSystemView.getSystemDisplayName(files.get(rowIndex));
+//		case 2: return fileSystemView.getSystemDisplayName(files.get(rowIndex).getNewState());
 		case 3: return files.get(rowIndex).length();
 		case 4:	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 				return sdf.format(files.get(rowIndex).lastModified());
