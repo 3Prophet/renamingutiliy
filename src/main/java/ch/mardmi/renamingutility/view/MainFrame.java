@@ -86,7 +86,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private JTree fileTree;
 
-	private JCheckBox useOptionAddPanel;
+	private static JCheckBox useOptionAddPanel;
 
 	/**
 	 * Gibt zurück, ob das AddPanel aktiv ist
@@ -96,7 +96,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		return useOptionAddPanel.isSelected();
 	}
 
-	private JCheckBox useOptionRemovePanel;
+	private static JCheckBox useOptionRemovePanel;
 
 	/**
 	 * Gibt zurück, ob das RemovePanel aktiv ist
@@ -106,53 +106,61 @@ public class MainFrame extends JFrame implements ActionListener {
 		return useOptionRemovePanel.isSelected();
 	}
 
-	private JTextField prefixField;
+	private static JTextField prefixField;
 
 	/**
 	 * Gibt den Wert aus dem Feld prefixField zurück
 	 * @return String
 	 */
-	public String getPrefixFieldContent() {
+	public static String getPrefixFieldContent() {
 		return prefixField.getText();
 	}
 
-	private JTextField suffixField;
+	private static JTextField suffixField;
 
 	/**
 	 * Gibt den Wert aus dem Feld suffixField zurück
 	 * @return String
 	 */
-	public String getSuffixFieldContent() {
+	public static String getSuffixFieldContent() {
 		return suffixField.getText();
 	}
 
-	private JTextField insertField;
+	private static JTextField insertField;
 
 	/**
 	 * Gibt den Wert aus dem Feld InsertField zurück
 	 * @return String
 	 */
-	public String getInsertFieldContent() {
+	public static String getInsertFieldContent() {
 		return insertField.getText();
 	}
 
-	private JSpinner positionSpinner;
+	private static JSpinner positionSpinner;
 
-	public JSpinner getPositionSpinner() {
+	/** 
+	 * Gibt den Spinner positionSpinner zurück
+	 * @return Spinner
+	 */
+	public static JSpinner getPositionSpinner() {
 		return positionSpinner;
 	}
 
 	/**
-	 * Gibt den numerischen Wert aus dem Feld positionSpinner zurück
-	 * @return int
+	 * Gibt den numerischen Wert aus dem positionSpinner zurück
+	 * @return int 
 	 */
-	public int getPositionSpinnerValue() {
+	public static int getPositionSpinnerValue() {
 		return (int) positionSpinner.getValue();
 	}
 
-	private JSpinner firstNSpinner;
+	private static JSpinner firstNSpinner;
 
-	public JSpinner getFirstNSpinner() {
+	/**
+	 * Gibt den Spinner getFirstNSpinner zurück
+	 * @return Spinner
+	 */
+	public static JSpinner getFirstNSpinner() {
 		return firstNSpinner;
 	}
 
@@ -166,6 +174,10 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private JSpinner lastNSpinner;
 
+	/**
+	 * Gibt den Spinner lastNSpinner zurück
+	 * @return Spinner
+	 */
 	public JSpinner getLastSpinner() {
 		return lastNSpinner;
 	}
@@ -202,7 +214,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Erstellt Status Pane, welche die Anzahl der Dateien und 
+	 * Erstellt Status Panel, welches die Anzahl der Dateien und 
 	 * der selektierten Dateien anzeigt.
 	 */
 	private void createStatusBar() {
@@ -233,6 +245,9 @@ public class MainFrame extends JFrame implements ActionListener {
 		container.add(BorderLayout.NORTH, splitPane);
 	}
 
+	/**
+	 * Erstellung des Panels mit den auswählbaren Funktionen
+	 */
 	private void createEditorPanel() {
 		editorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		createAddEditionPanel();
@@ -240,6 +255,9 @@ public class MainFrame extends JFrame implements ActionListener {
 		container.add(BorderLayout.CENTER, editorPanel);
 	}
 
+	/**
+	 * Panel für die Add-Funktion
+	 */
 	private void createAddEditionPanel() {
 		JPanel additionPanel = new JPanel();
 		additionPanel.setLayout(new BoxLayout(additionPanel, BoxLayout.Y_AXIS));
@@ -288,7 +306,10 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		editorPanel.add(additionPanel);
 	}
-
+	
+	/**
+	 * Panel für die Remove-Funktion
+	 */
 	private void createRemoveEditionPanel() {
 		JPanel removalPanel = new JPanel();
 		removalPanel.setLayout(new BoxLayout(removalPanel, BoxLayout.Y_AXIS));
@@ -331,6 +352,9 @@ public class MainFrame extends JFrame implements ActionListener {
 		listSelectionModel.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
 
+	/**
+	 * Panel mit den Buttons erstellen
+	 */
 	private void createButtonPanel() {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
@@ -396,25 +420,39 @@ public class MainFrame extends JFrame implements ActionListener {
 		fileTreePane = new JScrollPane(fileTree);
 	}
 	
+	/**
+	 * Listener für die Buttons anlegen
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if ("clear".equals(e.getActionCommand())) {
+
 			// Add-Panel initialisieren
 			useOptionAddPanel.setSelected(false);
 			prefixField.setText("");
 			suffixField.setText("");
 			insertField.setText("");
 			positionSpinner.setValue(0);
-			
+
 			// Remove-Panel initialisieren
 			useOptionRemovePanel.setSelected(false);
 			firstNSpinner.setValue(0);
 			lastNSpinner.setValue(0);
-		} else {
+		} else if ("clear".equals(e.getActionCommand())) {
+
 			// Dateien umbennen
 			System.out.println("Dateien umbenennen ...");
+
+		} else {
+		
+			// nichts ausführen
+			
 		}
 	}
 
+	/**
+	 * Handlers für die verschiedenen Felder 
+	 * @param handlers
+	 */
 	public void setHandlers(Map<ActionKey, Object> handlers) {
 		listSelectionModel
 				.addListSelectionListener((ListSelectionListener) handlers.get(ActionKey.TABLE_SELECTION_HANDLER));

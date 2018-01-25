@@ -9,6 +9,9 @@ import javax.swing.ImageIcon;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 
+import ch.mardmi.renamingutility.view.MainFrame;
+
+
 /**
  * Ein Modell für die Datei-Tabelle. Diese stellt den Inhalt des
  * Verzeichnisses dar. Dafür werden 5 Spalten verwendet:
@@ -80,8 +83,8 @@ public class DirectoryContentModel extends AbstractTableModel {
 		switch (columnIndex) {
 		case 0: return fileSystemView.getSystemIcon(files.get(rowIndex));
 		case 1: return fileSystemView.getSystemDisplayName(files.get(rowIndex));
-		case 2: return fileSystemView.getSystemDisplayName(files.get(rowIndex));
-//		case 2: return fileSystemView.getSystemDisplayName(files.get(rowIndex).getNewState());
+//		case 2: return fileSystemView.getSystemDisplayName(files.get(rowIndex));
+		case 2: return getNewState(fileSystemView.getSystemDisplayName(files.get(rowIndex)));
 		case 3: return files.get(rowIndex).length();
 		case 4:	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 				return sdf.format(files.get(rowIndex).lastModified());
@@ -89,6 +92,16 @@ public class DirectoryContentModel extends AbstractTableModel {
 		return null;
 	}
 	
+	/**
+	 * Den neuen Dateinamen für die Anzeige erstellen
+	 * @param oldFilename Alter Dateiname
+	 * @return String Neuer Dateiname
+	 */
+	public String getNewState(String oldFilename) {
+		String newFilename =  MainFrame.getPrefixFieldContent() + oldFilename + MainFrame.getSuffixFieldContent(); 
+		return newFilename;
+	}
+
 	/**
 	 * Klasse jeder Spalte
 	 */
