@@ -17,6 +17,23 @@ public class HandlerHelper {
 	public void execute() {
 		DirectoryContentModel model = gui.getDirectoryContentModel();
 		model.setPrefix(filesSelected);
+		
+		if (gui.addPanel(selected)) {
+			if (gui.getPrefix().notEmpty()) {
+				model.setPrefix(filesSelected);
+			}
+			if gui.getSuffix.. {
+				model.setSufix(filesSelecte);
+			}
+			
+			
+			
+			
+		}
+		
+		if (gui.removePanelSelected() {
+			if 
+		})
 	}
 	
 	public static void setSelectedFiles(List<Integer> filesSelected) {

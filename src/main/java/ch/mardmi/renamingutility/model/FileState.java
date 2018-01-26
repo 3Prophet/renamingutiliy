@@ -33,4 +33,8 @@ public class FileState {
 	public void resetFileState() {
 		newFileState = currentFileState;
 	}
+	
+	public void setPrefix(String prefix) {
+		.prefix...
+	}
 }

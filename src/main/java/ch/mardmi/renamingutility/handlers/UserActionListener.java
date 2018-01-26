@@ -16,6 +16,7 @@ public class UserActionListener extends AbstractHandler implements DocumentListe
 			System.out.println("Feldinhalt von prefixField ist: " + gui.getPrefixFieldContent());
 			System.out.println("Feldinhalt von suffixField ist: " + gui.getSuffixFieldContent());
 			System.out.println("Feldinhalt von insertField ist: " + gui.getInsertFieldContent());
+			(new Handler()).execute();
 		}
 	}
 

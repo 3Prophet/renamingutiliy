@@ -128,5 +128,12 @@ public class DirectoryContentModel extends AbstractTableModel {
 	public boolean isCellEditable(int row, int col) {
 		return false;
 	}
+	
+	public void setPrefix(List<Integer> indices, String prefix) {
+		for (int i: indices) {
+			files.get(i).setPrefix(prefix);
+		}
+		fireTableDataChanged();
+	}
 
 }
