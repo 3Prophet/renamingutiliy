@@ -11,6 +11,9 @@ public class FileState {
 	
 	private Path newFileState;
 	
+	// Path hat eine Methode getFilename
+	// sowie Path.getParent() um das Verzeichnis auszulesen
+	
 	public FileState(File currentFileState) {
 		this.currentFileState = currentFileState.toPath();
 		this.newFileState = this.currentFileState;

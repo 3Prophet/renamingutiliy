@@ -22,6 +22,7 @@ public class HandlerHelper {
 			if (gui.getPrefix().notEmpty()) {
 				model.setPrefix(filesSelected);
 			}
+			
 			if gui.getSuffix.. {
 				model.setSufix(filesSelecte);
 			}
