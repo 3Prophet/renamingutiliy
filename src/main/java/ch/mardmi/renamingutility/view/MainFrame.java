@@ -3,6 +3,7 @@ package ch.mardmi.renamingutility.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -190,6 +192,38 @@ public class MainFrame extends JFrame implements ActionListener {
 		return (int) lastNSpinner.getValue();
 	}
 
+	private static JCheckBox useOptionReplacePanel;
+
+	/**
+	 * Gibt zurück, ob das ReplacePanel aktiv ist
+	 * @return boolean
+	 */
+	public boolean getUseOptionReplacePanel() {
+		return useOptionReplacePanel.isSelected();
+	}
+
+	private static JTextField replaceTextFromField;
+
+	/**
+	 * Gibt den Wert aus dem Feld prefixField zurück
+	 * @return String
+	 */
+	public static String getReplaceFieldContent() {
+		return replaceTextFromField.getText();
+	}
+
+	private static JTextField replaceTextWithField;
+
+	/**
+	 * Gibt den Wert aus dem Feld WithField zurück
+	 * @return String
+	 */
+	public static String getReplaceWithContent() {
+		return replaceTextWithField.getText();
+	}
+
+
+	
 	public StatusModel getStatusModel() {
 		return statusModel;
 	}
@@ -251,6 +285,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private void createEditorPanel() {
 		editorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		createAddEditionPanel();
+		createReplaceEditionPanel();
 		createRemoveEditionPanel();
 		container.add(BorderLayout.CENTER, editorPanel);
 	}
@@ -304,6 +339,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		positionPanel.add(positionSpinner);
 		additionPanel.add(positionPanel);
 
+		// Add-Panel dem Editor-Bereich hinzufügen
 		editorPanel.add(additionPanel);
 	}
 	
@@ -341,7 +377,41 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		removalPanel.add(spinnerPanel);
 
+		// Remove-Panel dem Editor-Bereich hinzufügen
 		editorPanel.add(removalPanel);
+	}
+	
+	private void createReplaceEditionPanel() {
+		JPanel replacePanel = new JPanel();
+		replacePanel.setLayout(new BoxLayout(replacePanel, BoxLayout.Y_AXIS));
+		replacePanel.setBorder(BorderFactory.createTitledBorder("Replace"));
+		
+		// CheckBox erstellen, wird für die Aktivierung des Replace-Panels verwendet
+		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		useOptionReplacePanel = new JCheckBox();
+		checkBoxPanel.add(useOptionReplacePanel);
+		replacePanel.add(checkBoxPanel);
+		
+		// Panel für das Eingabefeld 'Replace' erstellen
+		JPanel fromPanel = new JPanel();
+		JLabel fromLabel = new JLabel("Replace");
+		replaceTextFromField = new JTextField(PREFERRED_WIDTH);
+		fromPanel.add(fromLabel);
+		fromPanel.add(replaceTextFromField);
+		replacePanel.add(fromPanel);
+		
+		// Panel für das Eingabefeld 'With' erstellen
+		JPanel withPanel = new JPanel();
+		JLabel withLabel = new JLabel("With");
+		replaceTextWithField = new JTextField(PREFERRED_WIDTH);
+		withPanel.add(withLabel);
+		withPanel.add(Box.createRigidArea(new Dimension(15,0)));
+		withPanel.add(replaceTextWithField);
+		replacePanel.add(withPanel);
+		
+		// Replace-Panel dem Editor-Bereich hinzufügen
+		editorPanel.add(replacePanel);
+
 	}
 
 	private void createFileTable() {
