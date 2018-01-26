@@ -302,6 +302,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		useOptionAddPanel = new JCheckBox();
 		checkBoxPanel.add(useOptionAddPanel);
+		useOptionAddPanel.setEnabled(true);
 		additionPanel.add(checkBoxPanel);
 
 		// Panel für das Eingabefeld 'Prefix' erstellen
@@ -502,6 +503,11 @@ public class MainFrame extends JFrame implements ActionListener {
 			suffixField.setText("");
 			insertField.setText("");
 			positionSpinner.setValue(0);
+			
+			// Replace-Panel initialisieren
+			useOptionReplacePanel.setSelected(false);
+			replaceTextFromField.setText("");
+			replaceTextWithField.setText("");
 
 			// Remove-Panel initialisieren
 			useOptionRemovePanel.setSelected(false);

@@ -3,7 +3,7 @@ package ch.mardmi.renamingutility.handlers;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import ch.mardmi.renamingutility.model.DirectoryContentModel;
+import ch.mardmi.renamingutility.model.*;
 
 
 /**
@@ -20,7 +20,7 @@ public class UserActionListener extends AbstractHandler implements DocumentListe
 //			gui.getPrefixFieldContent();
 //			gui.getSuffixFieldContent();
 //			gui.getInsertFieldContent();
-			
+			System.out.println("Event insertUpdate ausgelöst");
 		}
 	}
 
