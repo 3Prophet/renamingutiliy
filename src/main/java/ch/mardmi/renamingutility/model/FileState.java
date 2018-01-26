@@ -38,6 +38,14 @@ public class FileState {
 	}
 	
 	public void setPrefix(String prefix) {
-		.prefix...
+//		.prefix...
+	}
+	
+	public void setSuffix(String suffix) {
+		
+	}
+	
+	public void setInsert(String insert) {
+		
 	}
 }

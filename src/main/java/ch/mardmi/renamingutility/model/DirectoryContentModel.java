@@ -107,7 +107,12 @@ public class DirectoryContentModel extends AbstractTableModel {
     
     public void rename() {
     	for (FileState fileState: files) {
-    		fileState.changeNewFileState();
+    		try {
+				fileState.changeNewFileState();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     	fireTableDataChanged();
     }
@@ -135,5 +140,20 @@ public class DirectoryContentModel extends AbstractTableModel {
 		}
 		fireTableDataChanged();
 	}
+	
+	public void setSuffix(List<Integer> indices, String suffix) {
+		for (int i: indices) {
+			files.get(i).setSuffix(suffix);
+		}
+		fireTableDataChanged();
+	}
+
+	public void setInsert(List<Integer> indices, String insert) {
+		for (int i: indices) {
+			files.get(i).setInsert(insert);
+		}
+		fireTableDataChanged();
+	}
+
 
 }

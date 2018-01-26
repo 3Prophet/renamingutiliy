@@ -2,6 +2,7 @@ package ch.mardmi.renamingutility.handlers;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 
@@ -17,8 +18,8 @@ public class TableSelectionHandler extends AbstractHandler implements ListSelect
 	public void valueChanged(ListSelectionEvent e) {
 		int selectedRowsCount = gui.getFileTable().getSelectedRowCount();
 		gui.getStatusModel().rowsSelected(selectedRowsCount);
-		
-		DirectoryContentModel model = (DirectoryContentModel) e.getSource();
+//		AbstractTableModel model = (AbstractTableModel) e.getSource();
+		//DirectoryContentModel model = (DirectoryContentModel) e.getSource();
 		
 	}
 
