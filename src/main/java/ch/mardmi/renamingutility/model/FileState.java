@@ -1,6 +1,8 @@
 package ch.mardmi.renamingutility.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileState {
@@ -22,8 +24,10 @@ public class FileState {
 		return newFileState.toFile();
 	}
 	
-	public void changeNewFileState() {
-		// TO-DO:
+	public void changeNewFileState() throws Exception {
+		if (currentFileState.compareTo(newFileState) == 0)
+		currentFileState = newFileState;
+		Files.move(currentFileState, newFileState);
 	}
 	
 	public void resetFileState() {

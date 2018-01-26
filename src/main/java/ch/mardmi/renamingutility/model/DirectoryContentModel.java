@@ -104,6 +104,20 @@ public class DirectoryContentModel extends AbstractTableModel {
             default: return String.class;
         }
     }
+    
+    public void rename() {
+    	for (FileState fileState: files) {
+    		fileState.changeNewFileState();
+    	}
+    	fireTableDataChanged();
+    }
+    
+    public void reset() {
+    	for (FileState fileState: files) {
+    		fileState.resetFileState();
+    	}
+    	fireTableDataChanged();
+    }
 	
 	@Override
 	 public String getColumnName(int col) {
