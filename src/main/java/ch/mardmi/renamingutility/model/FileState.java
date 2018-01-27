@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.io.FilenameUtils;
+
 import ch.mardmi.renamingutility.view.MainFrame;
 
 public class FileState {
@@ -58,7 +60,7 @@ public class FileState {
 	 * Dateiname um Prefix ergänzen
 	 * @param prefix
 	 */
-	synchronized public void setPrefix(String prefix, MainFrame gui) {
+	synchronized public void setPrefix(String prefix) {
 		newFileState = Paths.get(
 				currentFileState.getParent().toString(), prefix + currentFileState.getFileName().toString());
 	}
@@ -68,7 +70,16 @@ public class FileState {
 	 * @param suffix
 	 */
 	public void setSuffix(String suffix) {
+		String filePath =  currentFileState.getParent().toString();
 		
+		String fileName = FilenameUtils.getBaseName(currentFileState.toAbsolutePath().toString());
+		String extension = FilenameUtils.getExtension(currentFileState.toAbsolutePath().toString());
+		
+		String suffixedName = fileName + "suffix";
+		if (!extension.isEmpty()) {
+			suffixedName += "."+ extension;
+		}
+		newFileState = Paths.get(filePath, suffixedName);
 	}
 	
 	/**

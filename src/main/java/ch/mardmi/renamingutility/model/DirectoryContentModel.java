@@ -128,9 +128,9 @@ public class DirectoryContentModel extends AbstractTableModel {
     	fireTableDataChanged();
     }
     
-    public void setPrefix(List<Integer> indices, String prefix, MainFrame gui) {
+    public void setPrefix(List<Integer> indices, String prefix) {
     	for (int i: indices) {
-    		files.get(i).setPrefix(prefix, gui);
+    		files.get(i).setPrefix(prefix);
     	}
     	fireTableDataChanged();
     }

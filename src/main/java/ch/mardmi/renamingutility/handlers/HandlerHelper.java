@@ -42,17 +42,12 @@ public class HandlerHelper {
 		
 		if (gui.getUseOptionAddPanel()) {
 			if (!gui.getPrefixFieldContent().isEmpty()) {
-				
-				model.setPrefix(filesSelected, gui.getPrefixFieldContent(), gui);
-				
+				model.setPrefix(filesSelected, gui.getPrefixFieldContent());
 			} 
 			
-			if (gui.getSuffixFieldContent().isEmpty()) {
-				// do nothing
-			} else {
-				//model.setSuffix(filesSelected, gui.getSuffixFieldContent());
-			}
-			
+			if (!gui.getSuffixFieldContent().isEmpty()) {
+				model.setSuffix(filesSelected, gui.getSuffixFieldContent());
+			} 
 			if (gui.getInsertFieldContent().isEmpty()) {
 				// do nothing
 			} else {
