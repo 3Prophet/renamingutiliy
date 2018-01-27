@@ -16,11 +16,19 @@ public class TableSelectionHandler extends AbstractHandler implements ListSelect
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		int selectedRowsCount = gui.getFileTable().getSelectedRowCount();
-		gui.getStatusModel().rowsSelected(selectedRowsCount);
-//		AbstractTableModel model = (AbstractTableModel) e.getSource();
-		//DirectoryContentModel model = (DirectoryContentModel) e.getSource();
 		
+		if (!e.getValueIsAdjusting()) {
+			int selectedRowsCount = gui.getFileTable().getSelectedRowCount();
+			gui.getStatusModel().rowsSelected(selectedRowsCount);
+			
+			HandlerHelper.setSelectedRowIndices(gui.getFileTable().getSelectedRows());
+			/*
+			int[] selection = gui.getFileTable().getSelectedRows();
+			for (int i = 0; i < selection.length; i++) {
+				System.out.println(selection[i]);
+			}
+			System.out.println(selection.length);*/
+		}
 	}
 
 }

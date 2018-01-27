@@ -173,6 +173,14 @@ public class DirectoryContentModel extends AbstractTableModel {
 	public boolean isCellEditable(int row, int col) {
 		return false;
 	}
+
+	public void resetFileState() {
+		for(FileState state: files) {
+			state.resetFileState();
+		}
+		fireTableDataChanged();
+		
+	}
 	
 	
 }

@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -38,7 +40,7 @@ import ch.mardmi.renamingutility.handlers.AbstractHandler;
 import ch.mardmi.renamingutility.handlers.ActionKey;
 import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
 import ch.mardmi.renamingutility.handlers.TableModelChangeHandler;
-import ch.mardmi.renamingutility.handlers.UserActionListener;
+import ch.mardmi.renamingutility.handlers.UserActionHandler;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 import ch.mardmi.renamingutility.model.StatusModel;
 import ch.mardmi.renamingutility.model.FolderTreeCellRenderer;
@@ -94,6 +96,7 @@ public class MainFrame extends JFrame {
 	 * @return boolean
 	 */
 	public boolean getUseOptionAddPanel() {
+		System.out.println(useOptionAddPanel.isSelected());
 		return useOptionAddPanel.isSelected();
 	}
 
@@ -393,19 +396,20 @@ public class MainFrame extends JFrame {
 		listSelectionModel
 				.addListSelectionListener((ListSelectionListener) handlers.get(ActionKey.TABLE_SELECTION_HANDLER));
 		fileTree.addTreeSelectionListener(
-				(DirectorySelectionHandler) handlers.get(ActionKey.DIRECTORY_SELECTION_HANDLER));
-		prefixField.getDocument().addDocumentListener(
-				(UserActionListener) handlers.get(ActionKey.INPUT_LISTENER));
-		suffixField.getDocument().addDocumentListener(
-				(UserActionListener) handlers.get(ActionKey.INPUT_LISTENER));
-		insertField.getDocument().addDocumentListener(
-				(UserActionListener) handlers.get(ActionKey.INPUT_LISTENER));
+				(TreeSelectionListener) handlers.get(ActionKey.DIRECTORY_SELECTION_HANDLER));
+		prefixField.addKeyListener(
+				(KeyListener) handlers.get(ActionKey.INPUT_HANDLER));
+		suffixField.addKeyListener(
+				(KeyListener) handlers.get(ActionKey.INPUT_HANDLER));
+		insertField.addKeyListener(
+				(KeyListener) handlers.get(ActionKey.INPUT_HANDLER));
 		positionSpinner.addChangeListener(
-				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
+				(UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
 		firstNSpinner.addChangeListener(
-				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
+				(UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
 		lastNSpinner.addChangeListener(
-				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
+				(UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
+		useOptionAddPanel.addChangeListener((UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
 	}
 
 	/**

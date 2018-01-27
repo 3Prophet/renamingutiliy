@@ -11,7 +11,7 @@ import ch.mardmi.renamingutility.handlers.ActionKey;
 import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
 import ch.mardmi.renamingutility.handlers.SpinnerActionListener;
 import ch.mardmi.renamingutility.handlers.TableSelectionHandler;
-import ch.mardmi.renamingutility.handlers.UserActionListener;
+import ch.mardmi.renamingutility.handlers.UserActionHandler;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 import ch.mardmi.renamingutility.model.StatusModel;
 import ch.mardmi.renamingutility.view.MainFrame;
@@ -28,8 +28,7 @@ public class App extends JFrame {
     	
     	handlers.put(ActionKey.TABLE_SELECTION_HANDLER, new TableSelectionHandler());
     	handlers.put(ActionKey.DIRECTORY_SELECTION_HANDLER, new DirectorySelectionHandler());
-    	handlers.put(ActionKey.INPUT_LISTENER, new UserActionListener());
-    	handlers.put(ActionKey.SPINNER_LISTENER, new SpinnerActionListener());
+    	handlers.put(ActionKey.INPUT_HANDLER, new UserActionHandler());
     	
     	MainFrame.createMainFrame(new DirectoryContentModel(Paths.get("/").toFile()), 
      		   new StatusModel(), handlers);

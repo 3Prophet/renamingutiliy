@@ -3,6 +3,7 @@ package ch.mardmi.renamingutility.model;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import ch.mardmi.renamingutility.view.MainFrame;
 
@@ -57,20 +58,9 @@ public class FileState {
 	 * Dateiname um Prefix ergänzen
 	 * @param prefix
 	 */
-	public void setPrefix(String prefix, MainFrame gui) {
-//		.prefix...
-//		currentFileState.
-		System.out.println("Da haben wir was ...");
-		int rowCount = gui.getDirectoryModel().getRowCount();
-		for (int i = 0; i < rowCount; i++) {
-			String currentName = (String) gui.getDirectoryModel().getValueAt(i, 2);
-			
-			gui.getFileTable().setValueAt(prefix + currentName, i, 2);
-			//gui.getDirectoryModel().setValueAt(akutellerDateiname, i, 2);
-		}
-		
-//		newFileState..getFileName() = prefix + currentFileState.getFileName();
-//		String getName() Gibt den Dateinamen zurück
+	synchronized public void setPrefix(String prefix, MainFrame gui) {
+		newFileState = Paths.get(
+				currentFileState.getParent().toString(), prefix + currentFileState.getFileName().toString());
 	}
 	
 	/**
