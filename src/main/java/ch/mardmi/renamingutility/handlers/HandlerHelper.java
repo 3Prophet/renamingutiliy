@@ -11,6 +11,10 @@ public class HandlerHelper {
 	
 	private static List<Integer> filesSelected;
 	
+	/**
+	 * Aktionen in der Anzeige ausführen
+	 * @param gui Aktuellen Status der Oberfläche (inkl. aller Objekte)
+	 */
 	public static void execute(MainFrame gui) {
 		DirectoryContentModel model = gui.getDirectoryModel();
 		int [] filesAsArray = gui.getFileTable().getSelectedRows();
@@ -24,7 +28,7 @@ public class HandlerHelper {
 			if (gui.getPrefixFieldContent().isEmpty()) {
 				// do nothing
 			} else {
-				model.setPrefix(filesSelected, gui.getPrefixFieldContent());
+				model.setPrefix(filesSelected, gui.getPrefixFieldContent(), gui);
 			}
 			
 			if (gui.getSuffixFieldContent().isEmpty()) {
@@ -41,24 +45,20 @@ public class HandlerHelper {
 		}
 		
 		if (gui.getUseOptionRemovePanel()) {
-			if ((Integer) (gui.getFirstNSpinner().getValue()) == 0) {
-				// do nothing
-			} else {
-				
+			if ((Integer) (gui.getFirstNSpinner().getValue()) != 0) {
+				model.removeFirst(filesSelected, gui.getFirstSpinnerValue());
 			}
 			
-			if ((Integer) (gui.getLastSpinner().getValue()) == 0 ) {
-				// do nothing
-			} else {
-				
+			if ((Integer) (gui.getLastSpinner().getValue()) != 0 ) {
+				model.removeLast(filesSelected, gui.getLastSpinnerValue());
 			}
 
 		}
 		
 	}
 	
-	public static void setSelectedFiles(List<Integer> filesSelected) {
-		HandlerHelper.filesSelected = filesSelected;
-	}
+//	public static void setSelectedFiles(List<Integer> filesSelected) {
+//		HandlerHelper.filesSelected = filesSelected;
+//	}
 
 }

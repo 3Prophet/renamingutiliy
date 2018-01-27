@@ -334,8 +334,13 @@ public class MainFrame extends JFrame {
 
 	private void createButtonPanel() {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+		JButton clearButton = new JButton("Clear Input");
+		buttonPanel.add(clearButton);
+
 		JButton renameButton = new JButton("Rename");
 		buttonPanel.add(renameButton);
+		
 		southPanel.add(buttonPanel);
 	}
 
