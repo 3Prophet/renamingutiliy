@@ -41,6 +41,7 @@ import javax.swing.tree.DefaultTreeModel;
 import ch.mardmi.renamingutility.command.AbstractCommand;
 import ch.mardmi.renamingutility.handlers.AbstractHandler;
 import ch.mardmi.renamingutility.handlers.ActionKey;
+import ch.mardmi.renamingutility.handlers.ClearActionHandler;
 import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
 import ch.mardmi.renamingutility.handlers.TableModelChangeHandler;
 import ch.mardmi.renamingutility.handlers.UserActionHandler;
@@ -116,6 +117,8 @@ public class MainFrame extends JFrame {
 	private JSpinner firstNSpinner;
 
 	private JSpinner lastNSpinner;
+
+	private JButton clearButton;
 
 	public StatusModel getStatusModel() {
 		return statusModel;
@@ -295,7 +298,7 @@ public class MainFrame extends JFrame {
 	private void createButtonPanel() {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		JButton clearButton = new JButton("Clear Input");
+		clearButton = new JButton("Clear Input");
 		buttonPanel.add(clearButton);
 
 		JButton renameButton = new JButton("Rename");
@@ -362,6 +365,32 @@ public class MainFrame extends JFrame {
 							firstNSpinner.getModel().getValue(),
 							lastNSpinner.getModel().getValue());
 	}
+	
+	/**
+	 * Löschen Inhalt von aller Felder von Edition Panels
+	 */
+	public void resetPanels() {
+		resetAddEditionPanel();
+		resetRemoveEditionPanel();
+	}
+	
+	/**
+	 * Löschen Inhalt von aller Felder von Remove Panel
+	 */
+	private void resetRemoveEditionPanel() {
+		this.firstNSpinner.getModel().setValue(0);
+		this.lastNSpinner.getModel().setValue(0);
+	}
+
+	/**
+	 * Löschen Inhalt von aller Felder von Add Panel
+	 */
+	private void resetAddEditionPanel() {
+		suffixField.setText("");
+		prefixField.setText("");
+		insertField.setText("");
+		positionSpinner.getModel().setValue(0);
+	}
 
 	public void setHandlers(Map<ActionKey, Object> handlers) {
 		listSelectionModel
@@ -382,6 +411,7 @@ public class MainFrame extends JFrame {
 				(UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
 		useOptionAddPanel.addChangeListener((UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
 		useOptionRemovePanel.addChangeListener((UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
+		clearButton.addActionListener((ClearActionHandler) handlers.get(ActionKey.CLEAR_EDITOR_PANELS_HANDLER));
 	}
 
 	/**

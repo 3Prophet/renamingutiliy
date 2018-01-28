@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.swing.JFrame;
 
 import ch.mardmi.renamingutility.handlers.ActionKey;
+import ch.mardmi.renamingutility.handlers.ClearActionHandler;
 import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
 import ch.mardmi.renamingutility.handlers.TableSelectionHandler;
 import ch.mardmi.renamingutility.handlers.UserActionHandler;
@@ -27,7 +28,7 @@ public class App extends JFrame {
     	handlers.put(ActionKey.TABLE_SELECTION_HANDLER, new TableSelectionHandler());
     	handlers.put(ActionKey.DIRECTORY_SELECTION_HANDLER, new DirectorySelectionHandler());
     	handlers.put(ActionKey.INPUT_HANDLER, new UserActionHandler());
-    	
+    	handlers.put(ActionKey.CLEAR_EDITOR_PANELS_HANDLER, new ClearActionHandler());
     	MainFrame.createMainFrame(new DirectoryContentModel(Paths.get("/").toFile()), 
      		   new StatusModel(), handlers);
     }
