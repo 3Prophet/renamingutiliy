@@ -8,7 +8,7 @@ package ch.mardmi.renamingutility.command;
  * @author Dmitry Logvinovich
  *
  */
-public class AddToNameEditor implements FileNameEditor {
+public class AddToNameEditor extends AbstractFileNameEditor {
 	
 	/**
 	 * Prefix für den Dateiname
@@ -42,7 +42,7 @@ public class AddToNameEditor implements FileNameEditor {
 							String suffix, 
 							String insert, 
 							int position) {
-		this(selected);
+		super(selected);
 		if (!selected) {
 			return;
 		}
@@ -53,22 +53,9 @@ public class AddToNameEditor implements FileNameEditor {
 		this.position = position;
 	}
 	
-	private AddToNameEditor(boolean selected) {
-		this.selected = selected;
-	}
-	
-	/**
-	 * Unbenennt Datei when die entsprechende Berechtigung erteilt wird
-	 * 
-	 * @param fileName Dateiname für Aenderung
-	 * @returns Neuen Dateiname
-	 */
+
 	@Override
-	public String editName(String fileName) {
-		
-		if (!selected) {
-			return fileName;
-		}
+	protected String resultOfEdition(String fileName) {
 		StringBuilder sb = new StringBuilder(fileName);
 		sb.insert(0, prefix).append(suffix).insert(position, insert);
 		return sb.toString();
