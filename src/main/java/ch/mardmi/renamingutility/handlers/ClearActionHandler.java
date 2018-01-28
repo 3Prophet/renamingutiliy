@@ -7,7 +7,13 @@ public class ClearActionHandler extends AbstractHandler implements ActionListene
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		gui.resetPanels();
-		HandlerHelper.getHelper().execute(gui);
+		new Thread(
+				new Runnable() {
+					@Override
+					public void run() {
+						gui.resetPanels();
+						HandlerHelper.getHelper().execute(gui);
+					}
+				});
 	}
 }
