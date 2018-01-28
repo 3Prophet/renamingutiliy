@@ -6,10 +6,8 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 
-import ch.mardmi.renamingutility.command.AbstractCommand;
 import ch.mardmi.renamingutility.handlers.ActionKey;
 import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
-import ch.mardmi.renamingutility.handlers.SpinnerActionListener;
 import ch.mardmi.renamingutility.handlers.TableSelectionHandler;
 import ch.mardmi.renamingutility.handlers.UserActionHandler;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;

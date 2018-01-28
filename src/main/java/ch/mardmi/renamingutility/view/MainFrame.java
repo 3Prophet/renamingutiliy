@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -104,85 +105,17 @@ public class MainFrame extends JFrame {
 
 	private JCheckBox useOptionRemovePanel;
 
-	/**
-	 * Gibt zurück, ob das RemovePanel aktiv ist
-	 * @return boolean
-	 */
-	public boolean getUseOptionRemovePanel() {
-		return useOptionRemovePanel.isSelected();
-	}
-
 	private JTextField prefixField;
-
-	/**
-	 * Gibt den Wert aus dem Feld prefixField zurück
-	 * @return String
-	 */
-	public String getPrefixFieldContent() {
-		return prefixField.getText();
-	}
 
 	private JTextField suffixField;
 
-	/**
-	 * Gibt den Wert aus dem Feld suffixField zurück
-	 * @return String
-	 */
-	public String getSuffixFieldContent() {
-		return suffixField.getText();
-	}
-
 	private JTextField insertField;
-
-	/**
-	 * Gibt den Wert aus dem Feld InsertField zurück
-	 * @return String
-	 */
-	public String getInsertFieldContent() {
-		return insertField.getText();
-	}
 
 	private JSpinner positionSpinner;
 
-	public JSpinner getPositionSpinner() {
-		return positionSpinner;
-	}
-
-	/**
-	 * Gibt den numerischen Wert aus dem Feld positionSpinner zurück
-	 * @return int
-	 */
-	public int getPositionSpinnerValue() {
-		return (int) positionSpinner.getValue();
-	}
-
 	private JSpinner firstNSpinner;
 
-	public JSpinner getFirstNSpinner() {
-		return firstNSpinner;
-	}
-
-	/**
-	 * Gibt den numerischen Wert aus dem Feld firstNSpinner zurück
-	 * @return int
-	 */
-	public int getFirstSpinnerValue() {
-		return (int) firstNSpinner.getValue();
-	}
-
 	private JSpinner lastNSpinner;
-
-	public JSpinner getLastSpinner() {
-		return lastNSpinner;
-	}
-
-	/**
-	 * Gibt den numerischen Wert aus dem Feld lastNSpinner zurück
-	 * @return int
-	 */
-	public int getLastSpinnerValue() {
-		return (int) lastNSpinner.getValue();
-	}
 
 	public StatusModel getStatusModel() {
 		return statusModel;
@@ -240,6 +173,28 @@ public class MainFrame extends JFrame {
 	}
 
 	private void createEditorPanel() {
+		/**
+		editorPanel = new JPanel();
+		GroupLayout layout = new GroupLayout(editorPanel);
+		editorPanel.setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+		
+		JPanel addPanel = createAddEditionPanel();
+		JPanel removePanel = createRemoveEditionPanel();
+		
+		layout.setHorizontalGroup(
+				   layout.createSequentialGroup()
+				      .addComponent(addPanel)
+				      .addComponent(removePanel));
+		
+		layout.setVerticalGroup(
+				   layout.createSequentialGroup()
+				      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				           .addComponent(addPanel)
+				           .addComponent(removePanel)
+				          ));*/
+		 
 		editorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		createAddEditionPanel();
 		createRemoveEditionPanel();
@@ -286,13 +241,12 @@ public class MainFrame extends JFrame {
 		positionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		JLabel positionLabel = new JLabel("at pos.");
-		SpinnerModel positionModel = new SpinnerNumberModel(0, -100, 100, 1);
+		SpinnerModel positionModel = new SpinnerNumberModel(0, 0, 100, 1);
 		positionSpinner = new JSpinner(positionModel);
 		
 		positionPanel.add(positionLabel);
 		positionPanel.add(positionSpinner);
 		additionPanel.add(positionPanel);
-
 		editorPanel.add(additionPanel);
 	}
 
@@ -313,7 +267,7 @@ public class MainFrame extends JFrame {
 		JLabel firstNLabel = new JLabel("First n");
 		spinnerPanel.add(firstNLabel);
 
-		SpinnerModel firstNModel = new SpinnerNumberModel(0, -100, 100, 1);
+		SpinnerModel firstNModel = new SpinnerNumberModel(0, 0, 100, 1);
 		firstNSpinner = new JSpinner(firstNModel);
 		spinnerPanel.add(firstNSpinner);
 
@@ -321,7 +275,7 @@ public class MainFrame extends JFrame {
 		JLabel lastNLabel = new JLabel("Last n");
 		spinnerPanel.add(lastNLabel);
 
-		SpinnerModel lastNModel = new SpinnerNumberModel(0, -100, 100, 1);
+		SpinnerModel lastNModel = new SpinnerNumberModel(0, 0, 100, 1);
 		lastNSpinner = new JSpinner(lastNModel);
 		spinnerPanel.add(lastNSpinner);
 
@@ -400,8 +354,13 @@ public class MainFrame extends JFrame {
 							prefixField.getText(),
 							suffixField.getText(),
 							insertField.getText(),
-							positionSpinner.getModel().getValue()
-							);					
+							positionSpinner.getModel().getValue());					
+	}
+	
+	public List<Object> getRemovePanelConfiguration() {
+		return Arrays.asList(useOptionRemovePanel.isSelected(),
+							firstNSpinner.getModel().getValue(),
+							lastNSpinner.getModel().getValue());
 	}
 
 	public void setHandlers(Map<ActionKey, Object> handlers) {
@@ -422,6 +381,7 @@ public class MainFrame extends JFrame {
 		lastNSpinner.addChangeListener(
 				(UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
 		useOptionAddPanel.addChangeListener((UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
+		useOptionRemovePanel.addChangeListener((UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
 	}
 
 	/**

@@ -22,6 +22,7 @@ public class TableSelectionHandler extends AbstractHandler implements ListSelect
 			gui.getStatusModel().rowsSelected(selectedRowsCount);
 			
 			HandlerHelper.setSelectedRowIndices(gui.getFileTable().getSelectedRows());
+			//HandlerHelper.getHelper().execute(gui);
 			/*
 			int[] selection = gui.getFileTable().getSelectedRows();
 			for (int i = 0; i < selection.length; i++) {

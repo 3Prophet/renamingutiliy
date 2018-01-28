@@ -11,6 +11,11 @@ import org.apache.commons.io.FilenameUtils;
 import ch.mardmi.renamingutility.command.FileNameEditor;
 import ch.mardmi.renamingutility.view.MainFrame;
 
+/**
+ * 
+ * @author Dmitry Logvinovich
+ *
+ */
 public class FileState {
 	
 	private Path currentFileState;

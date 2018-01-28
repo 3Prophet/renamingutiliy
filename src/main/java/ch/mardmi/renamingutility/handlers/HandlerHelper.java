@@ -9,6 +9,7 @@ import javax.swing.JTable;
 
 import ch.mardmi.renamingutility.command.AddToNameEditor;
 import ch.mardmi.renamingutility.command.FileNameEditor;
+import ch.mardmi.renamingutility.command.RemoveFromNameEditor;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 import ch.mardmi.renamingutility.view.MainFrame;
 
@@ -36,6 +37,7 @@ public class HandlerHelper {
 		List<Integer>selectedFiles =  filesSelected;
 
 		List<Object> additionConfiguration = gui.getAdditionPanelConfiguration();
+		List<Object> removalConfiguration = gui.getRemovePanelConfiguration();
 		
 		FileNameEditor addToNameEditor = new AddToNameEditor( (boolean) additionConfiguration.get(0),
 							(String) additionConfiguration.get(1),
@@ -43,7 +45,15 @@ public class HandlerHelper {
 							(String) additionConfiguration.get(3),
 							(Integer) additionConfiguration.get(4)
 				);
-		List<FileNameEditor> fileNameEditors = Arrays.asList(addToNameEditor);
+		FileNameEditor removeFromNameEditor = new RemoveFromNameEditor(
+									(boolean) removalConfiguration.get(0),
+									(Integer) removalConfiguration.get(1),
+									(Integer) removalConfiguration.get(2)
+									);
+		
+		List<FileNameEditor> fileNameEditors = Arrays.asList(
+															addToNameEditor,
+															removeFromNameEditor);
 		model.changeFileStates(filesSelected, fileNameEditors);
 		reselect(selectedFiles, gui);
 
