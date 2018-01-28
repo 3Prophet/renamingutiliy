@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -286,6 +288,7 @@ public class MainFrame extends JFrame {
 		JLabel positionLabel = new JLabel("at pos.");
 		SpinnerModel positionModel = new SpinnerNumberModel(0, -100, 100, 1);
 		positionSpinner = new JSpinner(positionModel);
+		
 		positionPanel.add(positionLabel);
 		positionPanel.add(positionSpinner);
 		additionPanel.add(positionPanel);
@@ -390,6 +393,15 @@ public class MainFrame extends JFrame {
 		// tree.addTreeExpansionListener(new LazyCommand());
 
 		fileTreePane = new JScrollPane(fileTree);
+	}
+	
+	public List<Object> getAdditionPanelConfiguration() {
+		return Arrays.asList(useOptionAddPanel.isSelected(),
+							prefixField.getText(),
+							suffixField.getText(),
+							insertField.getText(),
+							positionSpinner.getModel().getValue()
+							);					
 	}
 
 	public void setHandlers(Map<ActionKey, Object> handlers) {

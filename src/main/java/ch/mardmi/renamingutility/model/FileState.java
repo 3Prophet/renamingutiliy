@@ -4,9 +4,11 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
+import ch.mardmi.renamingutility.command.FileNameEditor;
 import ch.mardmi.renamingutility.view.MainFrame;
 
 public class FileState {
@@ -55,54 +57,19 @@ public class FileState {
 	public void resetFileState() {
 		newFileState = currentFileState;
 	}
-	
-	/**
-	 * Dateiname um Prefix ergänzen
-	 * @param prefix
-	 */
-	synchronized public void setPrefix(String prefix) {
-		newFileState = Paths.get(
-				currentFileState.getParent().toString(), prefix + currentFileState.getFileName().toString());
-	}
-	
-	/**
-	 * Dateinamen um Suffix ergänzen (nicht die Extension!)
-	 * @param suffix
-	 */
-	public void setSuffix(String suffix) {
+
+	public void changeState(List<FileNameEditor> editors) {
 		String filePath =  currentFileState.getParent().toString();
-		
 		String fileName = FilenameUtils.getBaseName(currentFileState.toAbsolutePath().toString());
 		String extension = FilenameUtils.getExtension(currentFileState.toAbsolutePath().toString());
 		
-		String suffixedName = fileName + "suffix";
-		if (!extension.isEmpty()) {
-			suffixedName += "."+ extension;
+		for (FileNameEditor e: editors) {
+			fileName = e.editName(fileName);
 		}
-		newFileState = Paths.get(filePath, suffixedName);
-	}
-	
-	/**
-	 * Dateinamen an der angegebenen Position ergänzen
-	 * @param insert
-	 */
-	public void setInsert(String insert) {
-		
-	}
-	
-	/**
-	 * Die ersten n Zeichen im Dateinamen entfernen
-	 * @param remove
-	 */
-	public void removeFirst(int remove) {
-		
-	}
-	
-	/**
-	 * Die letzten n Zeichen im Dateinamen entfernen
-	 * @param remove
-	 */
-	public void removeLast(int remove) {
+		if (!extension.isEmpty()) {
+			fileName += "."+ extension;
+		}
+		newFileState = Paths.get(filePath, fileName);
 		
 	}
 }

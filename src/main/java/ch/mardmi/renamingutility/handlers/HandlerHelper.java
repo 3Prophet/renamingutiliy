@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.swing.JTable;
 
+import ch.mardmi.renamingutility.command.AddToNameEditor;
+import ch.mardmi.renamingutility.command.FileNameEditor;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 import ch.mardmi.renamingutility.view.MainFrame;
 
@@ -16,7 +18,7 @@ import ch.mardmi.renamingutility.view.MainFrame;
  */
 public class HandlerHelper {
 	
-	private static List<Integer> filesSelected;
+	private static List<Integer> filesSelected = Arrays.asList();
 	
 	/**
 	 * Singleton Instanz von HandlerHelper die alle Listener die bei Benutzer eingaben
@@ -32,49 +34,25 @@ public class HandlerHelper {
 		
 		DirectoryContentModel model = gui.getDirectoryModel();
 		List<Integer>selectedFiles =  filesSelected;
-		/**int [] filesAsArray = gui.getFileTable().getSelectedRows();
-		filesSelected = new ArrayList<Integer>();
-		
-		for (int i = 0; i < filesAsArray.length; i++) {
-			filesSelected.add(filesAsArray[i]);
-		}*/
-		
-		
-		if (gui.getUseOptionAddPanel()) {
-			if (!gui.getPrefixFieldContent().isEmpty()) {
-				model.setPrefix(filesSelected, gui.getPrefixFieldContent());
-			} 
-			
-			if (!gui.getSuffixFieldContent().isEmpty()) {
-				model.setSuffix(filesSelected, gui.getSuffixFieldContent());
-			} 
-			if (gui.getInsertFieldContent().isEmpty()) {
-				// do nothing
-			} else {
-				//model.setInsert(filesSelected, gui.getInsertFieldContent());
-			}
-		} else {
-			model.resetFileState();
-		}
-		reselect(selectedFiles, gui);
-		
-		if (gui.getUseOptionRemovePanel()) {
-			if ((Integer) (gui.getFirstNSpinner().getValue()) != 0) {
-				model.removeFirst(filesSelected, gui.getFirstSpinnerValue());
-			}
-			
-			if ((Integer) (gui.getLastSpinner().getValue()) != 0 ) {
-				model.removeLast(filesSelected, gui.getLastSpinnerValue());
-			}
 
-		}
+		List<Object> additionConfiguration = gui.getAdditionPanelConfiguration();
 		
+		FileNameEditor addToNameEditor = new AddToNameEditor( (boolean) additionConfiguration.get(0),
+							(String) additionConfiguration.get(1),
+							(String) additionConfiguration.get(2),
+							(String) additionConfiguration.get(3),
+							(Integer) additionConfiguration.get(4)
+				);
+		List<FileNameEditor> fileNameEditors = Arrays.asList(addToNameEditor);
+		model.changeFileStates(filesSelected, fileNameEditors);
+		reselect(selectedFiles, gui);
+
 	}
 	
 	public void reselect(List<Integer> selectedTableRows, MainFrame gui) {
 		JTable fileTable = gui.getFileTable();
 		for (int i: selectedTableRows) {
-			fileTable.setRowSelectionInterval(i, i);
+			fileTable.getSelectionModel().addSelectionInterval(i, i);
 		}
 	}
 	

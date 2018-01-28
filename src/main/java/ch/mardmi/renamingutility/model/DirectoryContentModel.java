@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
+import ch.mardmi.renamingutility.command.FileNameEditor;
 import ch.mardmi.renamingutility.view.MainFrame;
 
 /**
@@ -128,6 +129,13 @@ public class DirectoryContentModel extends AbstractTableModel {
     	fireTableDataChanged();
     }
     
+	public void changeFileStates(List<Integer> indices, List<FileNameEditor> editors) {
+		for (int i: indices) {
+			files.get(i).changeState(editors);
+		}
+		fireTableDataChanged();
+	}
+    /**
     public void setPrefix(List<Integer> indices, String prefix) {
     	for (int i: indices) {
     		files.get(i).setPrefix(prefix);
@@ -163,6 +171,8 @@ public class DirectoryContentModel extends AbstractTableModel {
     	}
     	fireTableDataChanged();
     }
+	*/
+	
 	
 	@Override
 	 public String getColumnName(int col) {
