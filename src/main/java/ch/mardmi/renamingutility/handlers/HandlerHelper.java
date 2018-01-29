@@ -74,6 +74,10 @@ public class HandlerHelper {
 		HandlerHelper.filesSelected = Arrays.stream(indices).boxed().collect(Collectors.toList());
 	}
 	
+	public static List<Integer> getFilesSelected() {
+		return filesSelected;
+	}
+	
 	/**
 	 * Methode die HandlerHelper Singleton ausgibt 
 	 * @return

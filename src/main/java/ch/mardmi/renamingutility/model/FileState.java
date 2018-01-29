@@ -51,9 +51,13 @@ public class FileState {
 	 * @throws Exception
 	 */
 	public void changeNewFileState() throws Exception {
-		if (currentFileState.compareTo(newFileState) == 0)
-		currentFileState = newFileState;
-		Files.move(currentFileState, newFileState);
+		if (!(currentFileState.compareTo(newFileState) == 0)) {
+			
+			Files.createFile(newFileState);
+			Files.move(currentFileState, newFileState);
+			currentFileState = newFileState;
+			
+		}
 	}
 	
 	/** 
