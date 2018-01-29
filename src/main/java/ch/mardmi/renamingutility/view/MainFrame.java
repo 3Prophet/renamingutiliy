@@ -404,13 +404,13 @@ public class MainFrame extends JFrame {
 		insertField.addKeyListener(
 				(KeyListener) handlers.get(ActionKey.INPUT_HANDLER));
 		positionSpinner.addChangeListener(
-				(UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
+				(ChangeListener) handlers.get(ActionKey.INPUT_HANDLER));
 		firstNSpinner.addChangeListener(
-				(UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
+				(ChangeListener) handlers.get(ActionKey.INPUT_HANDLER));
 		lastNSpinner.addChangeListener(
-				(UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
-		useOptionAddPanel.addChangeListener((UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
-		useOptionRemovePanel.addChangeListener((UserActionHandler) handlers.get(ActionKey.INPUT_HANDLER));
+				(ChangeListener) handlers.get(ActionKey.INPUT_HANDLER));
+		useOptionAddPanel.addActionListener((ActionListener) handlers.get(ActionKey.INPUT_HANDLER));
+		useOptionRemovePanel.addActionListener((ActionListener) handlers.get(ActionKey.INPUT_HANDLER));
 		clearButton.addActionListener((ClearActionHandler) handlers.get(ActionKey.CLEAR_EDITOR_PANELS_HANDLER));
 	}
 

@@ -46,23 +46,6 @@ public class DirectoryContentModel extends AbstractTableModel {
 	}
 
 	/**
-	/**
-	 * @return selectedFiles Liste der ausgewählten Dateien
-	 */
-	/**
-	public List<File> getSelectedFiles() {
-		return selectedFiles;
-	}*/
-
-	/**
-	 * @param selectedFiles Setze Datei-Auswahl
-	 */
-	/**
-	public void setSelectedFiles(List<File> selectedFiles) {
-		this.selectedFiles = selectedFiles;
-	}*/
-
-	/**
 	 * @param dir Pfad zum Verzeichnis, dessen Inhalt dargestellt werden soll.
 	 */
 	public void displayDir(File dir) {

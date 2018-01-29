@@ -1,14 +1,17 @@
 package ch.mardmi.renamingutility.handlers;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class UserActionHandler extends AbstractHandler implements KeyListener, ChangeListener {
+public class UserActionHandler extends AbstractHandler implements KeyListener, ChangeListener, ActionListener {
 
 
 
@@ -16,11 +19,9 @@ public class UserActionHandler extends AbstractHandler implements KeyListener, C
 	public void stateChanged(ChangeEvent e) {
 		new Thread(
 				new Runnable() {
-
 					@Override
 					public void run() {
-						HandlerHelper.getHelper().execute(gui);
-						
+						HandlerHelper.getHelper().execute(gui);					
 					}
 					
 				}).start();
@@ -34,6 +35,20 @@ public class UserActionHandler extends AbstractHandler implements KeyListener, C
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		new Thread(
+				new Runnable() {
+					@Override
+					public void run() {
+						HandlerHelper.getHelper().execute(gui);
+						
+					}
+					
+				}).start();
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		new Thread(
 				new Runnable() {
 
