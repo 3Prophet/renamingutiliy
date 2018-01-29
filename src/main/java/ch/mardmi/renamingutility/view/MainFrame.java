@@ -120,6 +120,8 @@ public class MainFrame extends JFrame {
 
 	private JButton clearButton;
 
+	private JButton renameButton;
+
 	public StatusModel getStatusModel() {
 		return statusModel;
 	}
@@ -301,7 +303,7 @@ public class MainFrame extends JFrame {
 		clearButton = new JButton("Clear Input");
 		buttonPanel.add(clearButton);
 
-		JButton renameButton = new JButton("Rename");
+		renameButton = new JButton("Rename");
 		buttonPanel.add(renameButton);
 		
 		southPanel.add(buttonPanel);
@@ -411,7 +413,8 @@ public class MainFrame extends JFrame {
 				(ChangeListener) handlers.get(ActionKey.INPUT_HANDLER));
 		useOptionAddPanel.addActionListener((ActionListener) handlers.get(ActionKey.INPUT_HANDLER));
 		useOptionRemovePanel.addActionListener((ActionListener) handlers.get(ActionKey.INPUT_HANDLER));
-		clearButton.addActionListener((ClearActionHandler) handlers.get(ActionKey.CLEAR_EDITOR_PANELS_HANDLER));
+		clearButton.addActionListener((ActionListener) handlers.get(ActionKey.CLEAR_EDITOR_PANELS_HANDLER));
+		renameButton.addActionListener((ActionListener) handlers.get(ActionKey.RENAME_HANDLER));
 	}
 
 	/**

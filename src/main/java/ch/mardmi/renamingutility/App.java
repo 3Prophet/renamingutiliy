@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import ch.mardmi.renamingutility.handlers.ActionKey;
 import ch.mardmi.renamingutility.handlers.ClearActionHandler;
 import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
+import ch.mardmi.renamingutility.handlers.RenameHandler;
 import ch.mardmi.renamingutility.handlers.TableSelectionHandler;
 import ch.mardmi.renamingutility.handlers.UserActionHandler;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
@@ -29,6 +30,7 @@ public class App extends JFrame {
     	handlers.put(ActionKey.DIRECTORY_SELECTION_HANDLER, new DirectorySelectionHandler());
     	handlers.put(ActionKey.INPUT_HANDLER, new UserActionHandler());
     	handlers.put(ActionKey.CLEAR_EDITOR_PANELS_HANDLER, new ClearActionHandler());
+    	handlers.put(ActionKey.RENAME_HANDLER, new RenameHandler());
     	MainFrame.createMainFrame(new DirectoryContentModel(Paths.get("/").toFile()), 
      		   new StatusModel(), handlers);
     }
