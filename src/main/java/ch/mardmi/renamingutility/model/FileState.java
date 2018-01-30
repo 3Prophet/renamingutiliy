@@ -9,7 +9,6 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 
 import ch.mardmi.renamingutility.command.FileNameEditor;
-import ch.mardmi.renamingutility.view.MainFrame;
 
 /**
  * Implementiert Zustand für die Datei Tabelle Einträge,
@@ -64,8 +63,7 @@ public class FileState {
 	 * @throws Exception
 	 */
 	public void changeNewFileState() throws Exception {
-		if (!(currentFileState.compareTo(newFileState) == 0)) {
-			
+		if (!(currentFileState.compareTo(newFileState) == 0)) {	
 			Files.move(currentFileState, currentFileState.resolveSibling(newFileState));
 			currentFileState = newFileState;
 			

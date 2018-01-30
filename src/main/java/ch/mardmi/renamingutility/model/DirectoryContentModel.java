@@ -8,10 +8,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-
 import ch.mardmi.renamingutility.command.FileNameEditor;
-import ch.mardmi.renamingutility.view.MainFrame;
 
 /**
  * Ein Modell für die Datei-Tabelle. Diese stellt den Inhalt des

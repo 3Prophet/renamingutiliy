@@ -26,8 +26,7 @@ public class UserActionHandler extends AbstractHandler implements KeyListener, C
 					@Override
 					public void run() {
 						HandlerHelper.getHelper().execute(gui);					
-					}
-					
+					}	
 				}).start();
 	}
 
@@ -46,8 +45,7 @@ public class UserActionHandler extends AbstractHandler implements KeyListener, C
 				new Runnable() {
 					@Override
 					public void run() {
-						HandlerHelper.getHelper().execute(gui);
-						
+						HandlerHelper.getHelper().execute(gui);	
 					}
 				}).start();
 	}
@@ -62,7 +60,6 @@ public class UserActionHandler extends AbstractHandler implements KeyListener, C
 					@Override
 					public void run() {
 						HandlerHelper.getHelper().execute(gui);
-						
 					}					
 				}).start();
 		
