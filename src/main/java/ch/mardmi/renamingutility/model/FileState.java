@@ -12,19 +12,32 @@ import ch.mardmi.renamingutility.command.FileNameEditor;
 import ch.mardmi.renamingutility.view.MainFrame;
 
 /**
+ * Implementiert Zustand für die Datei Tabelle Einträge,
+ * deren Modelle ist mithilfe von
+ * @link {ch.mardmi.renamingutility.model.DirectoryContentModel}
+ * implementiert
  * 
  * @author Dmitry Logvinovich
  *
  */
 public class FileState {
 	
+	/**
+	 * Aktueller Dateiname
+	 */
 	private Path currentFileState;
 	
+	/**
+	 * (Potenziell)Neuer Dateiname
+	 */
 	private Path newFileState;
 	
-	// Path hat eine Methode getFilename
-	// sowie Path.getParent() um das Verzeichnis auszulesen
-	
+	/**
+	 * Während der Initialisierung Phase sind aktueller und 
+	 * neuer Dateinamen gleichgesetzt
+	 * 
+	 * @param currentFileState Aktuelle Dateiname
+	 */
 	public FileState(File currentFileState) {
 		this.currentFileState = currentFileState.toPath();
 		this.newFileState = this.currentFileState;
@@ -61,12 +74,18 @@ public class FileState {
 	}
 	
 	/** 
-	 * neuen Dateinamen zurücksetzen
+	 * Dateinamen zurücksetzen
 	 */
 	public void resetFileState() {
 		newFileState = currentFileState;
 	}
-
+	
+	/**
+	 * Aktualisiert currentFileState mit dem Resultat von Nameaenderung
+	 * bei Dateiname Editoren.
+	 * 
+	 * @param editors
+	 */
 	public void changeState(List<FileNameEditor> editors) {
 		String filePath =  currentFileState.getParent().toString();
 		String fileName = FilenameUtils.getBaseName(currentFileState.toAbsolutePath().toString());
@@ -79,6 +98,5 @@ public class FileState {
 			fileName += "."+ extension;
 		}
 		newFileState = Paths.get(filePath, fileName);
-		
 	}
 }

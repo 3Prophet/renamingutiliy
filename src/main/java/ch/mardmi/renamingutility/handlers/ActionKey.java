@@ -1,7 +1,7 @@
 package ch.mardmi.renamingutility.handlers;
 
 /**
- * @author Martin Herzog
+ * @author Dmitry Logvinovich, Martin Herzog
  * An dieser Stelle werden die Listener für die verschiedenen
  * Eingabe elemente zentral zusammengestellt
  */

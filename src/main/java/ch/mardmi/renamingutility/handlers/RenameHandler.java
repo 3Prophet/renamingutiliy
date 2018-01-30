@@ -4,6 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * Ausführt Datei Umbenennung.
+ * 
+ * @author Dmitry Logvinovich
+ *
+ */
 public class RenameHandler extends AbstractHandler implements ActionListener {
 
 	@Override
