@@ -1,6 +1,5 @@
 package ch.mardmi.renamingutility.handlers;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,9 +15,14 @@ import ch.mardmi.renamingutility.view.MainFrame;
 /**
  * Singleton von HandlerHelper die alle Listener die bei Benutzer eingaben
  * aufrufen und auf diese weise gleich auf die Benutzer eingaben reagieren
+ * 
+ * @author Dmitry Logvinovich
  */
 public class HandlerHelper {
 	
+	/**
+	 * Eine liste von Indizen von selektierten Dateien.
+	 */
 	private static List<Integer> filesSelected = Arrays.asList();
 	
 	/**
@@ -28,7 +32,10 @@ public class HandlerHelper {
 	private static HandlerHelper helper;
 	
 	/**
-	 * Aktionen in der Anzeige ausführen
+	 * Konfiguriert Datei Editoren {@see ch.mardmi.renamingutility.command.FileNameEditor}
+	 * und ruft  {@link ch.mardmi.renamingutility.model.DirectoryContentModel#changeFileStates(List, List)},
+	 * die wird Datei Umbenennung durchführen.
+	 * 
 	 * @param gui Aktuellen Status der Oberfläche (inkl. aller Objekte)
 	 */
 	public void execute(MainFrame gui) {
@@ -56,9 +63,15 @@ public class HandlerHelper {
 															removeFromNameEditor);
 		model.changeFileStates(filesSelected, fileNameEditors);
 		reselect(selectedFiles, gui);
-
 	}
 	
+	/**
+	 * Soll aufgeruft werden nach dem {@see javax.swing.table.AbstractTableModel#fireTableDataChanged()}
+	 * ausgeführ wird, da die Letzte Methode anuliert Datei Selection in JTable.
+	 * 
+	 * @param selectedTableRows Eine liste von Indizen von selektierten Dateien
+	 * @param gui GBO fenster
+	 */
 	public void reselect(List<Integer> selectedTableRows, MainFrame gui) {
 		JTable fileTable = gui.getFileTable();
 		for (int i: selectedTableRows) {
@@ -74,12 +87,16 @@ public class HandlerHelper {
 		HandlerHelper.filesSelected = Arrays.stream(indices).boxed().collect(Collectors.toList());
 	}
 	
+	/**
+	 * Gibt Indizen von gewählten Dateine weiter.
+	 * @return
+	 */
 	public static List<Integer> getFilesSelected() {
 		return filesSelected;
 	}
 	
 	/**
-	 * Methode die HandlerHelper Singleton ausgibt 
+	 * Methode die HandlerHelper Singleton weitergibt. 
 	 * @return
 	 */
 	public static HandlerHelper getHelper() {
