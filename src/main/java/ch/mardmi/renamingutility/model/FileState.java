@@ -66,8 +66,9 @@ public class FileState {
 	public void changeNewFileState() throws Exception {
 		if (!(currentFileState.compareTo(newFileState) == 0)) {
 			
-			Files.createFile(newFileState);
-			Files.move(currentFileState, newFileState);
+//			Files.createFile(newFileState);
+//			Files.move(currentFileState, newFileState);
+			Files.move(currentFileState, currentFileState.resolveSibling(newFileState));
 			currentFileState = newFileState;
 			
 		}
