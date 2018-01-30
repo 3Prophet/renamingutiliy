@@ -5,6 +5,12 @@ import javax.swing.event.TableModelListener;
 
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 
+/**
+ * Aktualisiert StatusModel mit dem Anzahl von gewählten Dateien, wenn die letzte augewählt werden.
+ *  
+ * @author Dmitry Logvinovich
+ *
+ */
 public class TableModelChangeHandler extends AbstractHandler implements TableModelListener {
 
 	@Override
