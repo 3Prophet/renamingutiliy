@@ -17,8 +17,8 @@ import ch.mardmi.renamingutility.model.StatusModel;
 import ch.mardmi.renamingutility.view.MainFrame;
 
 /**
- *  @author Dmitry Logvinovich & Martin Herzog
- *  Diese Klasse startet das Renaming Utility
+ * Diese Klasse startet das Renaming Utility
+ * @author Dmitry Logvinovich & Martin Herzog
  */
 public class App extends JFrame {
 	
