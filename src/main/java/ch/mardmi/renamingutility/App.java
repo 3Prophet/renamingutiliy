@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import ch.mardmi.renamingutility.handlers.ActionKey;
 import ch.mardmi.renamingutility.handlers.ClearActionHandler;
@@ -22,7 +24,7 @@ import ch.mardmi.renamingutility.view.MainFrame;
  */
 public class App extends JFrame {
 	
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws Exception {
     	
     	Map<ActionKey, Object> handlers = new HashMap<ActionKey, Object>();
     	
@@ -31,6 +33,7 @@ public class App extends JFrame {
     	handlers.put(ActionKey.INPUT_HANDLER, new UserActionHandler());
     	handlers.put(ActionKey.CLEAR_EDITOR_PANELS_HANDLER, new ClearActionHandler());
     	handlers.put(ActionKey.RENAME_HANDLER, new RenameHandler());
+    	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     	MainFrame.createMainFrame(new DirectoryContentModel(Paths.get("/").toFile()), 
      		   new StatusModel(), handlers);
     }
