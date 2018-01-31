@@ -3,6 +3,7 @@ package ch.mardmi.renamingutility.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -32,6 +33,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -43,21 +45,34 @@ import ch.mardmi.renamingutility.model.StatusModel;
 import ch.mardmi.renamingutility.model.FolderTreeCellRenderer;
 
 public class MainFrame extends JFrame {
-
+	
+	/**
+	 * Breite von Text Felder
+	 */
 	private static final int PREFERRED_WIDTH = 10;
+	
+	/**
+	 * Damit wird JTable's Reiche Höhe multipliziert um Datei Symbole umzufassen
+	 */
+	private static final double TABLE_HEIGHT_RATIO = 1.3;
+	
+	/**
+	 * Damit wird die breite von die erste Datei Tabelle Spalete (zeigt Datei Symbol) incrementiert 
+	 */
+	private static final int COLUMN_WIDTH_INCREMENT = 10;
 
-	// Action Handlers
+	/**
+	 *  Action Handlers die mit der Widgets verbunden sind
+	 */
 	private static Map<ActionKey, Object> handlers;
 
 	private Container container;
 
-	// Tabelle mit dem Inhalt des Verzeichnisses
+	/**
+	 *  Tabelle die den Inhalt des Verzeichnisses Anzeigt
+	 */
 	private JTable fileTable;
 
-	/**
-	 * Erstellt die die tabellarische Ansicht für die Dateien
-	 * @return fileTable
-	 */
 	public JTable getFileTable() {
 		return fileTable;
 	}
@@ -237,7 +252,6 @@ public class MainFrame extends JFrame {
 
 		// Panel für den Spinner 'Position' erstellen
 		JPanel positionPanel = new JPanel();
-		positionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		JLabel positionLabel = new JLabel("at pos.");
 		SpinnerModel positionModel = new SpinnerNumberModel(0, 0, 100, 1);
@@ -286,10 +300,25 @@ public class MainFrame extends JFrame {
 	private void createFileTable() {
 		fileTable = new JTable(directoryModel);
 		directoryModel.addTableModelListener(new TableModelChangeHandler());
+		fileTable.setRowHeight( (int)(fileTable.getRowHeight()*TABLE_HEIGHT_RATIO) );
 		fileTable.setName("fileTable");
 		fileTable.setShowGrid(false);
+		fileTable.setAutoCreateRowSorter(true);
 		listSelectionModel = fileTable.getSelectionModel();
 		listSelectionModel.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		
+		TableColumn tableColumn = fileTable.getColumnModel().getColumn(0);
+        JLabel label = new JLabel( (String)tableColumn.getHeaderValue() );
+        Dimension preferred = label.getPreferredSize();
+        int width = (int)preferred.getWidth() + COLUMN_WIDTH_INCREMENT;
+        
+        tableColumn.setPreferredWidth(width);
+        tableColumn.setMaxWidth(width);
+        tableColumn.setMinWidth(width);
+		
+		
+		
+		
 	}
 
 	private void createButtonPanel() {
