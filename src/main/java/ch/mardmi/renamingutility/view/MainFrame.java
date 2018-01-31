@@ -149,7 +149,9 @@ public class MainFrame extends JFrame {
 		createNavigationPanel();
 		createEditorPanel();
 		createSouthPanel();
+
 		setSize(900, 720);
+
 		setVisible(true);
 	}
 
