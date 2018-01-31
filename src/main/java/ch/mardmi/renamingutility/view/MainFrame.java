@@ -286,6 +286,7 @@ public class MainFrame extends JFrame {
 		fileTable = new JTable(directoryModel);
 		directoryModel.addTableModelListener(new TableModelChangeHandler());
 		fileTable.setName("fileTable");
+		fileTable.setShowGrid(false);
 		listSelectionModel = fileTable.getSelectionModel();
 		listSelectionModel.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
