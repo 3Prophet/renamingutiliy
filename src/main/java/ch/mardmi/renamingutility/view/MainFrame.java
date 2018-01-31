@@ -162,9 +162,10 @@ public class MainFrame extends JFrame {
 	private void createNavigationPanel() {
 		createFileTreeNavigation();
 		createFileTable();
-
+		JScrollPane fileTablePane = new JScrollPane(fileTable);
+		fileTablePane.getViewport().setBackground(Color.WHITE);
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(fileTreePane),
-				new JScrollPane(fileTable));
+				fileTablePane);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(150);
 		container.add(BorderLayout.NORTH, splitPane);
