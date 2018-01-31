@@ -96,16 +96,16 @@ public class AppTest {
 	
 	@Test
 	public void endToEndTest() throws InterruptedException {
-		/**
+		
 		application.hasStarted();
-		//application.numberOfFilesInADirectoryIsShown();
+		application.numberOfFilesInADirectoryIsShown();
 		
 		application.selectFilesInADirectory();
 		application.numberOfFilesAndNumberOfSelectedFilesIsShown();
 		application.enterPrefixToBeAddedToSelectedFiles();
 		application.displaysNewNamesNextToOldNames();
 		application.renameSelectedFiles();
-		application.displaysRenamedFiles();*/
+		application.displaysRenamedFiles();
 	}
 	
 	
