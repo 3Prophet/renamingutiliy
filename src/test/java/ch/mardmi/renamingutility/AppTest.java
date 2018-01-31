@@ -102,6 +102,7 @@ public class AppTest {
 		
 		application.selectFilesInADirectory();
 		application.numberOfFilesAndNumberOfSelectedFilesIsShown();
+		Thread.sleep(10000);
 		application.enterPrefixToBeAddedToSelectedFiles();
 		application.displaysNewNamesNextToOldNames();
 		application.renameSelectedFiles();

@@ -137,6 +137,10 @@ public class MainFrame extends JFrame {
 	public void setStatusModel(StatusModel statusModel) {
 		this.statusModel = statusModel;
 	}
+	
+	public JTree getFileTree() {
+		return fileTree;
+	}
 
 	public MainFrame(DirectoryContentModel directoryModel, StatusModel statusModel) {
 		super();

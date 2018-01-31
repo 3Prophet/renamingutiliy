@@ -29,10 +29,18 @@ public class DirectorySelectionHandler extends AbstractHandler implements TreeSe
 	 */
 	@Override
 	public void valueChanged(TreeSelectionEvent e) {
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-		selectedDir = (File) node.getUserObject();
-		lazyLoadSelectedDirectory(node);
-		gui.getDirectoryModel().displayDir(selectedDir);
+		new Thread(
+			new Runnable() {
+				@Override
+				public void run() {
+					gui.getFileTree().setEnabled(false);
+					DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+					selectedDir = (File) node.getUserObject();
+					lazyLoadSelectedDirectory(node);
+					gui.getDirectoryModel().displayDir(selectedDir);
+					gui.getFileTree().setEnabled(true);
+				}
+			}).start();		
 	}
 	
 	/**
@@ -41,6 +49,10 @@ public class DirectorySelectionHandler extends AbstractHandler implements TreeSe
 	 * @param node Eine selektierte Knote
 	 */
 	private void lazyLoadSelectedDirectory(DefaultMutableTreeNode node) {
+		// Um eine Knote mehrmals mit der Kinder nicht einzupflegen
+		if (node.getChildCount() != 0) {
+			return;
+		}
 		File[] files = gui.getFileSystemView().getFiles(selectedDir, true);
 		for (File file : files) {
 			if (file.isDirectory()) {
