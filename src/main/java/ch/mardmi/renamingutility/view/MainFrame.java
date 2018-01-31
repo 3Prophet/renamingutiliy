@@ -236,6 +236,7 @@ public class MainFrame extends JFrame {
 		JPanel prefixPanel = new JPanel();
 		JLabel prefixLabel = new JLabel("Prefix");
 		prefixField = new JTextField(PREFERRED_WIDTH);
+		prefixField.setName("prefixField");
 		prefixPanel.add(prefixLabel);
 		prefixPanel.add(prefixField);
 		additionPanel.add(prefixPanel);
@@ -334,6 +335,7 @@ public class MainFrame extends JFrame {
 		buttonPanel.add(clearButton);
 
 		renameButton = new JButton("Rename");
+		renameButton.setName("renameButton");
 		buttonPanel.add(renameButton);
 		
 		southPanel.add(buttonPanel);

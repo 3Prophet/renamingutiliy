@@ -6,6 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,7 +18,7 @@ import java.util.List;
  * Ende zu Ende Testen von der Application
  *
  */
-@Ignore
+//@Ignore
 public class AppTest {
 	
 	private static final Path testPath = TestFactory.getTestDirectory();
@@ -47,10 +48,12 @@ public class AppTest {
 	public void tearDown() throws IOException {
 		application.stop();
 		
-		for (String fname: targetFilenames) {
-			Path file = Paths.get(testPath.toString(), fname);
-			Files.delete(file);
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(testPath)) {
+			for (Path file: stream) {
+				Files.delete(file);
+			}
 		}
+		
 		Files.delete(testPath);
 	}
 	/**
@@ -98,15 +101,16 @@ public class AppTest {
 	public void endToEndTest() throws InterruptedException {
 		
 		application.hasStarted();
-		application.numberOfFilesInADirectoryIsShown();
+		//application.numberOfFilesInADirectoryIsShown();
 		
 		application.selectFilesInADirectory();
 		application.numberOfFilesAndNumberOfSelectedFilesIsShown();
-		Thread.sleep(10000);
+		
 		application.enterPrefixToBeAddedToSelectedFiles();
 		application.displaysNewNamesNextToOldNames();
 		application.renameSelectedFiles();
 		application.displaysRenamedFiles();
+		
 	}
 	
 	
