@@ -102,57 +102,12 @@ public class DirectoryContentModel extends AbstractTableModel {
     	fireTableDataChanged();
     }
     
-    public void reset() {
-    	for (FileState fileState: files) {
-    		fileState.resetFileState();
-    	}
-    	fireTableDataChanged();
-    }
-    
 	public void changeFileStates(List<Integer> indices, List<FileNameEditor> editors) {
 		for (int i: indices) {
 			files.get(i).changeState(editors);
 		}
 		fireTableDataChanged();
 	}
-    /**
-    public void setPrefix(List<Integer> indices, String prefix) {
-    	for (int i: indices) {
-    		files.get(i).setPrefix(prefix);
-    	}
-    	fireTableDataChanged();
-    }
-    
-    public void setSuffix(List<Integer> indices, String suffix) {
-    	for (int i: indices) {
-    		files.get(i).setSuffix(suffix);
-    	}
-    	fireTableDataChanged();
-    }
-    
-    public void setInsert(List<Integer> indices, String insert) {
-    	for (int i: indices) {
-    		files.get(i).setInsert(insert);
-    	}
-    	fireTableDataChanged();
-    }
-    
-    
-    public void removeFirst(List<Integer> indices, int removeFirst) {
-    	for (int i: indices) {
-    		files.get(i).removeFirst(removeFirst);
-    	}
-    	fireTableDataChanged();
-    }
-    
-    public void removeLast(List<Integer> indices, int removeLast) {
-    	for (int i: indices) {
-    		files.get(i).removeLast(removeLast);
-    	}
-    	fireTableDataChanged();
-    }
-	*/
-	
 	
 	@Override
 	 public String getColumnName(int col) {
@@ -163,14 +118,4 @@ public class DirectoryContentModel extends AbstractTableModel {
 	public boolean isCellEditable(int row, int col) {
 		return false;
 	}
-
-	public void resetFileState() {
-		for(FileState state: files) {
-			state.resetFileState();
-		}
-		fireTableDataChanged();
-		
-	}
-	
-	
 }
