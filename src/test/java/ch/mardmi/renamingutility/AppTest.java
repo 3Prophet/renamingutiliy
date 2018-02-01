@@ -92,12 +92,6 @@ public class AppTest {
 	}
 	
 	@Test
-	public void openingApplicationCausesProvidedDirectorySelectionInDirectoryTree() throws InterruptedException {
-		application.hasStarted();
-		application.providedDirectorySelected();
-	}
-	
-	@Test
 	public void endToEndTest() throws InterruptedException {
 		
 		application.hasStarted();
