@@ -10,14 +10,22 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
- * Renderer für TreeNode vom JTree.
+ * Renderer um eine Knote vom JTree darzustellen.
+ * 
+ * @author Dmitry Logvinovich
  */
 public class FolderTreeCellRenderer extends DefaultTreeCellRenderer {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * Dient interagierung mit Datei System
+	 */
 	private FileSystemView fileSystemView;
-
+	
+	/**
+	 * Label für eine Knote
+	 */
     private JLabel label;
 
     public FolderTreeCellRenderer() {
@@ -25,7 +33,10 @@ public class FolderTreeCellRenderer extends DefaultTreeCellRenderer {
         label.setOpaque(true);
         fileSystemView = FileSystemView.getFileSystemView();
     }
-
+    
+    /**
+     * Definiert wie die JTree Knote anseen soll.
+     */
     @Override
     public Component getTreeCellRendererComponent(
         JTree tree,
@@ -41,7 +52,6 @@ public class FolderTreeCellRenderer extends DefaultTreeCellRenderer {
         label.setIcon(fileSystemView.getSystemIcon(file));
         label.setText(fileSystemView.getSystemDisplayName(file));
         label.setToolTipText(file.getPath());
-
         if (selected) {
             label.setBackground(backgroundSelectionColor);
             label.setForeground(textSelectionColor);

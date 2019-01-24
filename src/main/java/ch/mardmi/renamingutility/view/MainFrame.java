@@ -6,13 +6,14 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -28,38 +29,50 @@ import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import ch.mardmi.renamingutility.handlers.AbstractHandler;
 import ch.mardmi.renamingutility.handlers.ActionKey;
-import ch.mardmi.renamingutility.handlers.DirectorySelectionHandler;
 import ch.mardmi.renamingutility.handlers.TableModelChangeHandler;
-import ch.mardmi.renamingutility.handlers.UserActionListener;
 import ch.mardmi.renamingutility.model.DirectoryContentModel;
 import ch.mardmi.renamingutility.model.StatusModel;
 import ch.mardmi.renamingutility.model.FolderTreeCellRenderer;
 
-public class MainFrame extends JFrame implements ActionListener {
-
+public class MainFrame extends JFrame {
+	
+	/**
+	 * Breite von Text Felder
+	 */
 	private static final int PREFERRED_WIDTH = 10;
+	
+	/**
+	 * Damit wird JTable's Reiche Höhe multipliziert um Datei Symbole umzufassen
+	 */
+	private static final double TABLE_HEIGHT_RATIO = 1.3;
+	
+	/**
+	 * Damit wird die breite von die erste Datei Tabelle Spalete (zeigt Datei Symbol) incrementiert 
+	 */
+	private static final int COLUMN_WIDTH_INCREMENT = 10;
 
-	// Action Handlers
+	/**
+	 *  Action Handlers die mit der Widgets verbunden sind
+	 */
 	private static Map<ActionKey, Object> handlers;
 
 	private Container container;
 
-	// Tabelle mit dem Inhalt des Verzeichnisses
+	/**
+	 *  Tabelle die den Inhalt des Verzeichnisses Anzeigt
+	 */
 	private JTable fileTable;
 
-	/**
-	 * Erstellt die die tabellarische Ansicht für die Dateien
-	 * @return fileTable
-	 */
 	public JTable getFileTable() {
 		return fileTable;
 	}
@@ -88,148 +101,45 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private JTree fileTree;
 
-	private static JCheckBox useOptionAddPanel;
+	private JCheckBox useOptionAddPanel;
 
 	/**
 	 * Gibt zurück, ob das AddPanel aktiv ist
 	 * @return boolean
 	 */
 	public boolean getUseOptionAddPanel() {
+		System.out.println(useOptionAddPanel.isSelected());
 		return useOptionAddPanel.isSelected();
 	}
 
-	private static JCheckBox useOptionRemovePanel;
+	private JCheckBox useOptionRemovePanel;
 
-	/**
-	 * Gibt zurück, ob das RemovePanel aktiv ist
-	 * @return boolean
-	 */
-	public boolean getUseOptionRemovePanel() {
-		return useOptionRemovePanel.isSelected();
-	}
+	private JTextField prefixField;
 
-	private static JTextField prefixField;
+	private JTextField suffixField;
 
-	/**
-	 * Gibt den Wert aus dem Feld prefixField zurück
-	 * @return String
-	 */
-	public static String getPrefixFieldContent() {
-		return prefixField.getText();
-	}
+	private JTextField insertField;
 
-	private static JTextField suffixField;
+	private JSpinner positionSpinner;
 
-	/**
-	 * Gibt den Wert aus dem Feld suffixField zurück
-	 * @return String
-	 */
-	public static String getSuffixFieldContent() {
-		return suffixField.getText();
-	}
-
-	private static JTextField insertField;
-
-	/**
-	 * Gibt den Wert aus dem Feld InsertField zurück
-	 * @return String
-	 */
-	public static String getInsertFieldContent() {
-		return insertField.getText();
-	}
-
-	private static JSpinner positionSpinner;
-
-	/** 
-	 * Gibt den Spinner positionSpinner zurück
-	 * @return Spinner
-	 */
-	public static JSpinner getPositionSpinner() {
-		return positionSpinner;
-	}
-
-	/**
-	 * Gibt den numerischen Wert aus dem positionSpinner zurück
-	 * @return int 
-	 */
-	public static int getPositionSpinnerValue() {
-		return (int) positionSpinner.getValue();
-	}
-
-	private static JSpinner firstNSpinner;
-
-	/**
-	 * Gibt den Spinner getFirstNSpinner zurück
-	 * @return Spinner
-	 */
-	public static JSpinner getFirstNSpinner() {
-		return firstNSpinner;
-	}
-
-	/**
-	 * Gibt den numerischen Wert aus dem Feld firstNSpinner zurück
-	 * @return int
-	 */
-	public int getFirstSpinnerValue() {
-		return (int) firstNSpinner.getValue();
-	}
+	private JSpinner firstNSpinner;
 
 	private JSpinner lastNSpinner;
 
-	/**
-	 * Gibt den Spinner lastNSpinner zurück
-	 * @return Spinner
-	 */
-	public JSpinner getLastSpinner() {
-		return lastNSpinner;
-	}
+	private JButton clearButton;
 
-	/**
-	 * Gibt den numerischen Wert aus dem Feld lastNSpinner zurück
-	 * @return int
-	 */
-	public int getLastSpinnerValue() {
-		return (int) lastNSpinner.getValue();
-	}
+	private JButton renameButton;
 
-	private static JCheckBox useOptionReplacePanel;
-
-	/**
-	 * Gibt zurück, ob das ReplacePanel aktiv ist
-	 * @return boolean
-	 */
-	public boolean getUseOptionReplacePanel() {
-		return useOptionReplacePanel.isSelected();
-	}
-
-	private static JTextField replaceTextFromField;
-
-	/**
-	 * Gibt den Wert aus dem Feld prefixField zurück
-	 * @return String
-	 */
-	public static String getReplaceFieldContent() {
-		return replaceTextFromField.getText();
-	}
-
-	private static JTextField replaceTextWithField;
-
-	/**
-	 * Gibt den Wert aus dem Feld WithField zurück
-	 * @return String
-	 */
-	public static String getReplaceWithContent() {
-		return replaceTextWithField.getText();
-	}
-
-
-	
 	public StatusModel getStatusModel() {
 		return statusModel;
 	}
 
 	public void setStatusModel(StatusModel statusModel) {
 		this.statusModel = statusModel;
+	}
+	
+	public JTree getFileTree() {
+		return fileTree;
 	}
 
 	public MainFrame(DirectoryContentModel directoryModel, StatusModel statusModel) {
@@ -243,12 +153,14 @@ public class MainFrame extends JFrame implements ActionListener {
 		createNavigationPanel();
 		createEditorPanel();
 		createSouthPanel();
-		setSize(700, 600);
+
+		setSize(900, 720);
+
 		setVisible(true);
 	}
 
 	/**
-	 * Erstellt Status Panel, welches die Anzahl der Dateien und 
+	 * Erstellt Status Pane, welche die Anzahl der Dateien und 
 	 * der selektierten Dateien anzeigt.
 	 */
 	private void createStatusBar() {
@@ -271,28 +183,44 @@ public class MainFrame extends JFrame implements ActionListener {
 	private void createNavigationPanel() {
 		createFileTreeNavigation();
 		createFileTable();
-
+		JScrollPane fileTablePane = new JScrollPane(fileTable);
+		fileTablePane.getViewport().setBackground(Color.WHITE);
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(fileTreePane),
-				new JScrollPane(fileTable));
+				fileTablePane);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(150);
 		container.add(BorderLayout.NORTH, splitPane);
 	}
 
-	/**
-	 * Erstellung des Panels mit den auswählbaren Funktionen
-	 */
 	private void createEditorPanel() {
+		/**
+		editorPanel = new JPanel();
+		GroupLayout layout = new GroupLayout(editorPanel);
+		editorPanel.setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+		
+		JPanel addPanel = createAddEditionPanel();
+		JPanel removePanel = createRemoveEditionPanel();
+		
+		layout.setHorizontalGroup(
+				   layout.createSequentialGroup()
+				      .addComponent(addPanel)
+				      .addComponent(removePanel));
+		
+		layout.setVerticalGroup(
+				   layout.createSequentialGroup()
+				      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				           .addComponent(addPanel)
+				           .addComponent(removePanel)
+				          ));*/
+		 
 		editorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		createAddEditionPanel();
-		createReplaceEditionPanel();
 		createRemoveEditionPanel();
 		container.add(BorderLayout.CENTER, editorPanel);
 	}
 
-	/**
-	 * Panel für die Add-Funktion
-	 */
 	private void createAddEditionPanel() {
 		JPanel additionPanel = new JPanel();
 		additionPanel.setLayout(new BoxLayout(additionPanel, BoxLayout.Y_AXIS));
@@ -302,13 +230,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		useOptionAddPanel = new JCheckBox();
 		checkBoxPanel.add(useOptionAddPanel);
-		useOptionAddPanel.setEnabled(true);
 		additionPanel.add(checkBoxPanel);
 
 		// Panel für das Eingabefeld 'Prefix' erstellen
 		JPanel prefixPanel = new JPanel();
 		JLabel prefixLabel = new JLabel("Prefix");
 		prefixField = new JTextField(PREFERRED_WIDTH);
+		prefixField.setName("prefixField");
 		prefixPanel.add(prefixLabel);
 		prefixPanel.add(prefixField);
 		additionPanel.add(prefixPanel);
@@ -331,22 +259,17 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		// Panel für den Spinner 'Position' erstellen
 		JPanel positionPanel = new JPanel();
-		positionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		JLabel positionLabel = new JLabel("at pos.");
-		SpinnerModel positionModel = new SpinnerNumberModel(0, -100, 100, 1);
+		SpinnerModel positionModel = new SpinnerNumberModel(0, 0, 100, 1);
 		positionSpinner = new JSpinner(positionModel);
+		
 		positionPanel.add(positionLabel);
 		positionPanel.add(positionSpinner);
 		additionPanel.add(positionPanel);
-
-		// Add-Panel dem Editor-Bereich hinzufügen
 		editorPanel.add(additionPanel);
 	}
-	
-	/**
-	 * Panel für die Remove-Funktion
-	 */
+
 	private void createRemoveEditionPanel() {
 		JPanel removalPanel = new JPanel();
 		removalPanel.setLayout(new BoxLayout(removalPanel, BoxLayout.Y_AXIS));
@@ -364,7 +287,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		JLabel firstNLabel = new JLabel("First n");
 		spinnerPanel.add(firstNLabel);
 
-		SpinnerModel firstNModel = new SpinnerNumberModel(0, -100, 100, 1);
+		SpinnerModel firstNModel = new SpinnerNumberModel(0, 0, 100, 1);
 		firstNSpinner = new JSpinner(firstNModel);
 		spinnerPanel.add(firstNSpinner);
 
@@ -372,76 +295,48 @@ public class MainFrame extends JFrame implements ActionListener {
 		JLabel lastNLabel = new JLabel("Last n");
 		spinnerPanel.add(lastNLabel);
 
-		SpinnerModel lastNModel = new SpinnerNumberModel(0, -100, 100, 1);
+		SpinnerModel lastNModel = new SpinnerNumberModel(0, 0, 100, 1);
 		lastNSpinner = new JSpinner(lastNModel);
 		spinnerPanel.add(lastNSpinner);
 
 		removalPanel.add(spinnerPanel);
 
-		// Remove-Panel dem Editor-Bereich hinzufügen
 		editorPanel.add(removalPanel);
-	}
-	
-	private void createReplaceEditionPanel() {
-		JPanel replacePanel = new JPanel();
-		replacePanel.setLayout(new BoxLayout(replacePanel, BoxLayout.Y_AXIS));
-		replacePanel.setBorder(BorderFactory.createTitledBorder("Replace"));
-		
-		// CheckBox erstellen, wird für die Aktivierung des Replace-Panels verwendet
-		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		useOptionReplacePanel = new JCheckBox();
-		checkBoxPanel.add(useOptionReplacePanel);
-		replacePanel.add(checkBoxPanel);
-		
-		// Panel für das Eingabefeld 'Replace' erstellen
-		JPanel fromPanel = new JPanel();
-		JLabel fromLabel = new JLabel("Replace");
-		replaceTextFromField = new JTextField(PREFERRED_WIDTH);
-		fromPanel.add(fromLabel);
-		fromPanel.add(replaceTextFromField);
-		replacePanel.add(fromPanel);
-		
-		// Panel für das Eingabefeld 'With' erstellen
-		JPanel withPanel = new JPanel();
-		JLabel withLabel = new JLabel("With");
-		replaceTextWithField = new JTextField(PREFERRED_WIDTH);
-		withPanel.add(withLabel);
-		withPanel.add(Box.createRigidArea(new Dimension(15,0)));
-		withPanel.add(replaceTextWithField);
-		replacePanel.add(withPanel);
-		
-		// Replace-Panel dem Editor-Bereich hinzufügen
-		editorPanel.add(replacePanel);
-
 	}
 
 	private void createFileTable() {
 		fileTable = new JTable(directoryModel);
 		directoryModel.addTableModelListener(new TableModelChangeHandler());
+		fileTable.setRowHeight( (int)(fileTable.getRowHeight()*TABLE_HEIGHT_RATIO) );
 		fileTable.setName("fileTable");
+		fileTable.setShowGrid(false);
+		fileTable.setAutoCreateRowSorter(true);
 		listSelectionModel = fileTable.getSelectionModel();
 		listSelectionModel.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		
+		TableColumn tableColumn = fileTable.getColumnModel().getColumn(0);
+        JLabel label = new JLabel( (String)tableColumn.getHeaderValue() );
+        Dimension preferred = label.getPreferredSize();
+        int width = (int)preferred.getWidth() + COLUMN_WIDTH_INCREMENT;
+        
+        tableColumn.setPreferredWidth(width);
+        tableColumn.setMaxWidth(width);
+        tableColumn.setMinWidth(width);
+		
+		
+		
+		
 	}
 
-	/**
-	 * Panel mit den Buttons erstellen
-	 */
 	private void createButtonPanel() {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		
-		// Clear-Button anlegen
-		JButton clearButton = new JButton("Clear Input");
-		clearButton.setActionCommand("clear");
-		buttonPanel.add(clearButton);		
-		
-		// Rename-Button anlegen
-		JButton renameButton = new JButton("Rename");
-		renameButton.setActionCommand("rename");
+
+		clearButton = new JButton("Clear Input");
+		buttonPanel.add(clearButton);
+
+		renameButton = new JButton("Rename");
+		renameButton.setName("renameButton");
 		buttonPanel.add(renameButton);
-		
-		// Listen for actions on buttons
-		clearButton.addActionListener(this);
-		renameButton.addActionListener(this);
 		
 		southPanel.add(buttonPanel);
 	}
@@ -491,62 +386,67 @@ public class MainFrame extends JFrame implements ActionListener {
 		fileTreePane = new JScrollPane(fileTree);
 	}
 	
+	public List<Object> getAdditionPanelConfiguration() {
+		return Arrays.asList(useOptionAddPanel.isSelected(),
+							prefixField.getText(),
+							suffixField.getText(),
+							insertField.getText(),
+							positionSpinner.getModel().getValue());					
+	}
+	
+	public List<Object> getRemovePanelConfiguration() {
+		return Arrays.asList(useOptionRemovePanel.isSelected(),
+							firstNSpinner.getModel().getValue(),
+							lastNSpinner.getModel().getValue());
+	}
+	
 	/**
-	 * Listener für die Buttons anlegen
+	 * Löschen Inhalt von aller Felder von Edition Panels
 	 */
-	public void actionPerformed(ActionEvent e) {
-		if ("clear".equals(e.getActionCommand())) {
-
-			// Add-Panel initialisieren
-			useOptionAddPanel.setSelected(false);
-			prefixField.setText("");
-			suffixField.setText("");
-			insertField.setText("");
-			positionSpinner.setValue(0);
-			
-			// Replace-Panel initialisieren
-			useOptionReplacePanel.setSelected(false);
-			replaceTextFromField.setText("");
-			replaceTextWithField.setText("");
-
-			// Remove-Panel initialisieren
-			useOptionRemovePanel.setSelected(false);
-			firstNSpinner.setValue(0);
-			lastNSpinner.setValue(0);
-		} else if ("clear".equals(e.getActionCommand())) {
-
-			// Dateien umbennen
-			System.out.println("Dateien umbenennen ...");
-
-		} else {
-		
-			// nichts ausführen
-			
-		}
+	public void resetPanels() {
+		resetAddEditionPanel();
+		resetRemoveEditionPanel();
+	}
+	
+	/**
+	 * Löschen Inhalt von aller Felder von Remove Panel
+	 */
+	private void resetRemoveEditionPanel() {
+		this.firstNSpinner.getModel().setValue(0);
+		this.lastNSpinner.getModel().setValue(0);
 	}
 
 	/**
-	 * Handlers für die verschiedenen Felder 
-	 * @param handlers
+	 * Löschen Inhalt von aller Felder von Add Panel
 	 */
+	private void resetAddEditionPanel() {
+		suffixField.setText("");
+		prefixField.setText("");
+		insertField.setText("");
+		positionSpinner.getModel().setValue(0);
+	}
+
 	public void setHandlers(Map<ActionKey, Object> handlers) {
 		listSelectionModel
 				.addListSelectionListener((ListSelectionListener) handlers.get(ActionKey.TABLE_SELECTION_HANDLER));
 		fileTree.addTreeSelectionListener(
-				(DirectorySelectionHandler) handlers.get(ActionKey.DIRECTORY_SELECTION_HANDLER));
-		prefixField.getDocument().addDocumentListener(
-				(UserActionListener) handlers.get(ActionKey.INPUT_LISTENER));
-		suffixField.getDocument().addDocumentListener(
-				(UserActionListener) handlers.get(ActionKey.INPUT_LISTENER));
-		insertField.getDocument().addDocumentListener(
-				(UserActionListener) handlers.get(ActionKey.INPUT_LISTENER));
+				(TreeSelectionListener) handlers.get(ActionKey.DIRECTORY_SELECTION_HANDLER));
+		prefixField.addKeyListener(
+				(KeyListener) handlers.get(ActionKey.INPUT_HANDLER));
+		suffixField.addKeyListener(
+				(KeyListener) handlers.get(ActionKey.INPUT_HANDLER));
+		insertField.addKeyListener(
+				(KeyListener) handlers.get(ActionKey.INPUT_HANDLER));
 		positionSpinner.addChangeListener(
-				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
+				(ChangeListener) handlers.get(ActionKey.INPUT_HANDLER));
 		firstNSpinner.addChangeListener(
-				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
+				(ChangeListener) handlers.get(ActionKey.INPUT_HANDLER));
 		lastNSpinner.addChangeListener(
-				(ChangeListener) handlers.get(ActionKey.SPINNER_LISTENER));
-		
+				(ChangeListener) handlers.get(ActionKey.INPUT_HANDLER));
+		useOptionAddPanel.addActionListener((ActionListener) handlers.get(ActionKey.INPUT_HANDLER));
+		useOptionRemovePanel.addActionListener((ActionListener) handlers.get(ActionKey.INPUT_HANDLER));
+		clearButton.addActionListener((ActionListener) handlers.get(ActionKey.CLEAR_EDITOR_PANELS_HANDLER));
+		renameButton.addActionListener((ActionListener) handlers.get(ActionKey.RENAME_HANDLER));
 	}
 
 	/**
@@ -567,5 +467,4 @@ public class MainFrame extends JFrame implements ActionListener {
 		frame.setHandlers(handlers);
 		return frame;
 	}
-
 }

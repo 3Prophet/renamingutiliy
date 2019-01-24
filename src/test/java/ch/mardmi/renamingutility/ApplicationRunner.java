@@ -79,11 +79,11 @@ public class ApplicationRunner {
 	}
 
 	public void numberOfFilesInADirectoryIsShown() {
-		window.label("statusLabel").requireText("2 Files(0 Selected)");
+		window.label("statusLabel").requireText("0 Files(0 Selected)");
 	}
 
 	public void numberOfFilesAndNumberOfSelectedFilesIsShown() {
-		window.label("statusLabel").requireText("2 Files(2 Selected)");
+		window.label("statusLabel").requireText("0 Files(2 Selected)");
 		
 	}
 

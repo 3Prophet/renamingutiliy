@@ -4,17 +4,23 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- * Aktualisiert Status-Modelle, wenn einige Reichen von Datei-Tabelle ausgewählt werden.
+ * Gibt eine Liste von Indices von ausgewählten Datei-Tabelle Reichen an HandlerHelper weiter
+ * {@see ch.mardmi.renamingutility.handlers.HandlerHelper#setSelectedRowIndices(int[])},
+ * wenn einige Reichen von Datei-Tabelle ausgewählt werden.
  * 
- * {@link ch.mardmi.renamingutility.model.StatusModel}
- *
+ * @author Dmitry Logvinovich
  */
 public class TableSelectionHandler extends AbstractHandler implements ListSelectionListener {
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		int selectedRowsCount = gui.getFileTable().getSelectedRowCount();
-		gui.getStatusModel().rowsSelected(selectedRowsCount);
+		
+		if (!e.getValueIsAdjusting()) {
+			int selectedRowsCount = gui.getFileTable().getSelectedRowCount();
+			gui.getStatusModel().rowsSelected(selectedRowsCount);
+			
+			HandlerHelper.setSelectedRowIndices(gui.getFileTable().getSelectedRows());
+		}
 	}
 
 }

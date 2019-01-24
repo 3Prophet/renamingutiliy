@@ -14,8 +14,17 @@ import org.junit.Test;
 import ch.mardmi.renamingutility.handlers.StatusModelListener;
 import ch.mardmi.renamingutility.model.StatusModel;
 
+/**
+ * Tests für Status Modelle {@link ch.mardmi.renamingutility.model.StatusModel}
+ * 
+ * @author Dmitry Logvinovich
+ *
+ */
 public class StatusModelTest {
 	
+	/**
+	 * Staus Modelle Einheit die getestet wird
+	 */
 	private StatusModel  statusModel;
 	
 	@Before
@@ -24,15 +33,12 @@ public class StatusModelTest {
 	}
 	
 	/**
-	 * 
-	 * @throws SecurityException
-	 * @throws NoSuchFieldException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
+	 * Test für  {@link ch.mardmi.renamingutility.model.StatusModel#addChangeListener(StatusModelListener)}
+	 * Es wird getestet, dass Addierung des Beobachters die Anzahl von Beobachters mit 1 incrementiert.
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
-	public void addingChangeListenerIncreasesNumberOfListeners() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+	public void addingChangeListenerIncreasesNumberOfListeners() throws Exception {
 		
 		StatusModelListener listener = mock(StatusModelListener.class);
 		
@@ -47,6 +53,13 @@ public class StatusModelTest {
 		assertThat(listeners.size(), is(1));
 	}
 	
+	/**
+	 * Testet, dass bei der Anzahl der selektierten Dateien Veränderung (z.B. wird eine neue Datei
+	 * selektiert),
+	 * werden die Beobachter Notifiziert, d.h. 
+	 * {@link ch.mardmi.renamingutility.handlers.StatusModelListener#statusModelChanged(StatusModel)}
+	 * wird aufgeruft.
+	 */
 	@Test
 	public void callingRowsSelectedMethodTriggersStatusModelListener() {
 		StatusModelListener listener = mock(StatusModelListener.class);
@@ -55,6 +68,12 @@ public class StatusModelTest {
 		verify(listener).statusModelChanged(statusModel);
 	}
 	
+	/**
+	 * Testet, dass bei der Anzahl der Deteien Veränderung (z.B. Oeffnen von neuem Verzeichnis),
+	 * werden die Beobachter Notifiziert, d.h. 
+	 * {@link ch.mardmi.renamingutility.handlers.StatusModelListener#statusModelChanged(StatusModel)}
+	 * wird aufgeruft.
+	 */
 	@Test
 	public void callingfilesInDirectoryChangedMethodTriggersStatusModelListener() {
 		StatusModelListener listener = mock(StatusModelListener.class);
@@ -63,6 +82,10 @@ public class StatusModelTest {
 		verify(listener).statusModelChanged(statusModel);
 	}
 	
+	/**
+	 * Testet, dass {@link ch.mardmi.renamingutility.model.StatusModel} Methode  
+	 * eine richtige Meldung augibt (Meldung Format: N Files(M Selected))
+	 */
 	@Test
 	public void toStringTest() {
 		statusModel.rowsSelected(2);
